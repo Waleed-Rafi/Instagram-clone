@@ -1,0 +1,37 @@
+.posts {
+    margin: 0 17% 4% 19%;
+}
+
+.all-posts {
+    border: 1px solid #dbdbdb;
+    width: 60%;
+}
+
+.photo-post img {
+    width: 100%;
+    background-size: cover;
+}
+
+.head-post {
+    margin: 10px 0 15px 10px;
+}
+
+.like-comment {
+    margin-left: 20px;
+}
+
+::placeholder {
+    color: rgb(142, 142, 142);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+button {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    border: none;
+    color: rgb(0, 149, 246);
+    background: none;
+    outline: none;
+    font-weight: bold;
+}
