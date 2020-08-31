@@ -6,11 +6,25 @@ class Notifications extends Component {
     return (
       <div>
         <div className="main">
-          <h1>Notifications</h1>
           <div className="allNotifications">
-            <div className="image"></div>
-            <div className="detail"></div>
-            <div className="ff-button"></div>
+            <div className="image">
+              <img
+                className="notifications-image"
+                src={this.props.postUserImage}
+                alt="User"
+              />
+            </div>
+            <div className="notification-body">
+              <div className="detail">
+                <div className="notification-userName">
+                  {this.props.postUserName}
+                </div>
+                <p className="notification-detail">Started following you</p>
+              </div>
+              <div>
+                <div className="notification-button">Follow</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
