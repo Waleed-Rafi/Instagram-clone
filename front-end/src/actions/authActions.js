@@ -6,7 +6,8 @@ import {
     SET_ERRORS,
     CLEAR_ERRORS,
     LOGOUT_USER,
-    SET_MY_POSTS
+    SET_MY_POSTS,
+    SET_ALL_POSTS
 } from "./actionTypes";
 
 export const loginUser = (userData, history) => {
@@ -121,6 +122,15 @@ export const setMyPosts = (payload) => {
     return (dispatch) => {
         dispatch({
             type: SET_MY_POSTS,
+            payload
+        })
+    }
+}
+
+export const setAllPosts = (payload) => {
+    return (dispatch) => {
+        dispatch({
+            type: SET_ALL_POSTS,
             payload
         })
     }

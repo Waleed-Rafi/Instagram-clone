@@ -29,16 +29,23 @@ class App extends Component {
     const token = localStorage.getItem("instagram");
     if (token) {
       let decoded = jwt_decode(token);
+      var date = new Date();
+      var timestamp = Math.floor(date.getTime() / 1000);
       if (
         decoded.id &&
         decoded.email &&
         decoded.password &&
         decoded.iat &&
-        decoded.exp
+        decoded.exp > timestamp
       ) {
         this.props.loginAfter();
         this.setState({
           redirect: <Redirect to="/" />,
+        });
+      } else if (timestamp >= decoded.exp) {
+        localStorage.removeItem("instagram");
+        this.setState({
+          redirect: <Redirect to="/login" />,
         });
       }
     } else {
@@ -93,15 +100,15 @@ class App extends Component {
                     <br />
                   </div>
                   <Profile
-                    postUserName="Waleed_Rafi"
-                    postUserImage={photo0}
-                    postUserImage1={photo0}
-                    postUserImage2={photo1}
-                    postUserImage3={photo2}
-                    postUserImage4={photo4}
-                    postUserImage5={photo5}
-                    postUserImage6={photo6}
-                    postUserImage7={photo7}
+                  // postUserName="Waleed_Rafi"
+                  // postUserImage={photo0}
+                  // postUserImage1={photo0}
+                  // postUserImage2={photo1}
+                  // postUserImage3={photo2}
+                  // postUserImage4={photo4}
+                  // postUserImage5={photo5}
+                  // postUserImage6={photo6}
+                  // postUserImage7={photo7}
                   />
                 </div>
               );
