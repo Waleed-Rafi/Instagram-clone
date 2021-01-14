@@ -16,8 +16,7 @@ router.get("/test", auth, (req, res) => {
 
 router.post(
     "/create",
-    auth,
-    [
+    auth, [
         check("imageUrl", "ImageUrl is not valid").isLength({
             min: 5,
             max: 255,
@@ -27,7 +26,7 @@ router.post(
             max: 250,
         }),
     ],
-    async (req, res) => {
+    async(req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.json(errors);
