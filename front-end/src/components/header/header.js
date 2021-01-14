@@ -3,11 +3,41 @@ import instagram_logo from "../../assets/logos/instagram.png";
 import "./header.css";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
+import UserModal from "../Modals/Users_Hashtags";
 
 class header extends Component {
+  state = {
+    searchedUserOrHashtag: "",
+    isOpenModal: false,
+  };
+  searchUsersHashtags = (e) => {
+    e.preventDefault();
+    console.log(this.state.searchedUserOrHashtag);
+    this.setState({
+      isOpenModal: true,
+    });
+  };
+  searchUsersHashtagsChangeHandler = (e) => {
+    this.setState({
+      searchedUserOrHashtag: e.target.value,
+      isOpenModal: false,
+    });
+  };
+  closeModal = () => {
+    this.setState({
+      isOpenModal: false,
+    });
+  };
   render() {
     return (
       <div className="inner">
+        {this.state.isOpenModal ? (
+          <UserModal
+            data={this.state.searchedUserOrHashtag}
+            isOpenModal={this.state.isOpenModal}
+            closeModal={this.closeModal}
+          />
+        ) : null}
         <ul>
           <li style={{ marginLeft: "17%" }}>
             <NavLink to="/">
@@ -20,9 +50,17 @@ class header extends Component {
               marginRight: "15rem",
             }}
           >
-            <div class="box">
-              <div class="container-1">
-                <input type="search" id="search" placeholder="Search" />
+            <div className="box">
+              <div className="container-1">
+                <form onSubmit={this.searchUsersHashtags}>
+                  <input
+                    onChange={this.searchUsersHashtagsChangeHandler}
+                    type="search"
+                    id="search"
+                    placeholder="Search"
+                  />
+                  <button type="submit"></button>
+                </form>
               </div>
             </div>
           </li>
@@ -30,7 +68,7 @@ class header extends Component {
             <NavLink to="/">
               <svg
                 aria-label="Home"
-                class="_8-yf5 "
+                className="_8-yf5 "
                 fill="#262626"
                 height="22"
                 viewBox="0 0 48 48"
@@ -43,7 +81,7 @@ class header extends Component {
           <li>
             <svg
               aria-label="Direct"
-              class="_8-yf5 "
+              className="_8-yf5 "
               fill="#262626"
               height="22"
               viewBox="0 0 48 48"
@@ -55,16 +93,16 @@ class header extends Component {
           <li>
             <svg
               aria-label="Find People"
-              class="_8-yf5 "
+              className="_8-yf5 "
               fill="#262626"
               height="22"
               viewBox="0 0 48 48"
               width="22"
             >
               <path
-                clip-rule="evenodd"
+                clipRule="evenodd"
                 d="M24 0C10.8 0 0 10.8 0 24s10.8 24 24 24 24-10.8 24-24S37.2 0 24 0zm0 45C12.4 45 3 35.6 3 24S12.4 3 24 3s21 9.4 21 21-9.4 21-21 21zm10.2-33.2l-14.8 7c-.3.1-.6.4-.7.7l-7 14.8c-.3.6-.2 1.3.3 1.7.3.3.7.4 1.1.4.2 0 .4 0 .6-.1l14.8-7c.3-.1.6-.4.7-.7l7-14.8c.3-.6.2-1.3-.3-1.7-.4-.5-1.1-.6-1.7-.3zm-7.4 15l-5.5-5.5 10.5-5-5 10.5z"
-                fill-rule="evenodd"
+                fillRule="evenodd"
               ></path>
             </svg>
           </li>
@@ -72,7 +110,7 @@ class header extends Component {
             <NavLink to="/notifications">
               <svg
                 aria-label="Activity Feed"
-                class="_8-yf5 "
+                className="_8-yf5 "
                 fill="#262626"
                 height="22"
                 viewBox="0 0 48 48"
@@ -83,10 +121,10 @@ class header extends Component {
             </NavLink>
           </li>
           <li style={{ marginRight: "17%" }}>
-            <NavLink to="/profile">
+            <NavLink to={`/profile?user=${this.props.auth.user.id}`}>
               <img
                 alt="profile"
-                class="profile"
+                className="profile"
                 src={this.props.auth.user.profilePic}
               />
             </NavLink>

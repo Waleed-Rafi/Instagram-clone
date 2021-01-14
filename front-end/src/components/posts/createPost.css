@@ -1,0 +1,13 @@
+.upload-file {
+    outline: none;
+}
+
+label {
+    background-color: cadetblue;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-size: smaller;
+}

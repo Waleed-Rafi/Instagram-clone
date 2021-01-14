@@ -20,7 +20,6 @@ li {
     background-size: cover;
 }
 
-
 .box {
     margin: 3px auto;
     width: 200px;
@@ -33,7 +32,6 @@ li {
     vertical-align: middle;
     white-space: nowrap;
     position: relative;
-
 }
 
 .container-1 input#search {
@@ -44,19 +42,15 @@ li {
     font-size: 10pt;
     text-align: center;
     color: #000000;
-
     -webkit-border-radius: 25px;
     -moz-border-radius: 25px;
     border-radius: 25px;
-
-
     -webkit-transition: background .55s ease;
     -moz-transition: background .55s ease;
     -ms-transition: background .55s ease;
     -o-transition: background .55s ease;
     transition: background .55s ease;
 }
-
 
 .container-1 input#search::-webkit-input-placeholder {
     color: #A8A7A7;
@@ -78,7 +72,6 @@ li {
     font-size: 12px;
 }
 
-
 .container-1 input#search:-ms-input-placeholder {
     color: #A8A7A7;
     letter-spacing: 1px;
@@ -93,44 +86,38 @@ input:focus:-moz-placeholder {
     color: transparent;
 }
 
+
 /* Firefox 18- */
+
 input:focus::-moz-placeholder {
     color: transparent;
 }
 
+
 /* Firefox 19+ */
+
 input:focus:-ms-input-placeholder {
     color: transparent;
 }
 
+
 /* oldIE ;) */
-
-
-
-
 
 .container-1 input#search:hover,
 .container-1 input#search:focus,
 .container-1 input#search:active {
     outline: none;
     background: #ffffff;
-
 }
-
-
 
 input::-webkit-search-decoration,
 input::-webkit-search-cancel-button {
     display: none;
 }
 
-
-@media all and (max-width : 370px) {
-
-
+@media all and (max-width: 370px) {
     .box {
         margin: 15px auto;
-
         width: 200px;
         height: 20px;
         padding-right: 10px;

@@ -1,66 +1,115 @@
 import React, { Component } from "react";
 import "./profile.css";
-import { logoutUser, setMyPosts } from "../../actions/authActions";
+import { logoutUser, setMyPosts, setAllPosts } from "../../actions/authActions";
 import { connect } from "react-redux";
+import CModal from "../Modals/Comments";
 import axios from "../../axios/axios";
+import { auth } from "firebase";
 
 class Profile extends Component {
   state = {
-    myPosts: [],
+    allPosts: [],
+    showCommentModal: false,
+    commentModalData: {},
+    commentModalPostIndex: null,
+    userId: this.props.auth.user.id,
   };
 
   logout = () => {
     this.props.logoutUser();
   };
-
+  findUserId() {
+    let url = window.location.search;
+    return url.split("=")[1];
+  }
   componentDidMount = async () => {
-    if (!this.props.auth.myPosts.length) {
+    let userId = parseInt(this.findUserId());
+
+    if (this.props.auth.myPosts.length > 0) {
+      if (this.props.auth.myPosts[0].id !== userId) {
+        axios.defaults.headers.common["x-auth-token"] = localStorage.getItem(
+          "instagram"
+        );
+        axios.get(`/api/posts/profile/${userId}`).then((res) => {
+          this.props.setMyPosts(res.data);
+          this.setState({
+            allPosts: res.data,
+            userId: userId,
+          });
+        });
+      } else {
+        console.log("from redux");
+        this.setState({
+          allPosts: this.props.auth.myPosts,
+          userId: userId,
+        });
+      }
+    } else if (!this.props.auth.myPosts.length) {
       axios.defaults.headers.common["x-auth-token"] = localStorage.getItem(
         "instagram"
       );
-      axios.get("/api/posts/my").then((res) => {
+      axios.get(`/api/posts/profile/${userId}`).then((res) => {
         this.props.setMyPosts(res.data);
         this.setState({
-          myPosts: res.data,
+          allPosts: res.data,
+          userId: userId,
         });
       });
-    } else {
+    } else if (
+      this.props.auth.myPosts.length > 0 &&
+      this.props.auth.myPosts[0].id === userId
+    ) {
       console.log("from redux");
       this.setState({
-        myPosts: this.props.auth.myPosts,
+        allPosts: this.props.auth.myPosts,
+        userId: userId,
       });
     }
   };
 
+  openCommentModal = (post, index) => {
+    this.setState({
+      showCommentModal: true,
+      commentModalData: post,
+      commentModalPostIndex: index,
+    });
+  };
+
+  closeCommentModal = (allComments, index) => {
+    let temp = [...this.state.allPosts];
+    let temp2 = [...this.props.auth.allPosts];
+    let i = temp2.findIndex((d) => d.post_id === temp[index].post_id);
+    allComments.map((data) => {
+      temp[index].comments.unshift(data);
+      temp2[i].comments.unshift(data);
+    });
+    this.props.setMyPosts(temp);
+    this.props.setAllPosts(temp2);
+    this.setState({
+      allPosts: temp,
+      showCommentModal: false,
+      commentModalData: {},
+      commentModalPostIndex: null,
+    });
+  };
+
   render() {
     let myPosts = null;
-    if (this.state.myPosts.length) {
-      myPosts = this.state.myPosts.map((post) => {
-        return (
-          <div>
-            <img src={post.imageUrl} alt="" />
-          </div>
-        );
-      });
-    } else {
-      myPosts = (
-        <div align="center">
-          <p>Empty</p>
-        </div>
-      );
-    }
-    return (
-      <div>
+    let headSection = null;
+    if (this.state.allPosts.length) {
+      headSection = (
         <div className="complete-profile">
           <div>
             <img
               alt="profile"
-              class="profile-pic"
-              src={this.props.auth.user.profilePic}
+              className="profile-pic"
+              src={this.state.allPosts[0].profilePic}
             />
           </div>
           <div className="user-detail">
-            <div className="user-name">{this.props.auth.user.name}</div>
+            <div>
+              <span className="user-name">{this.state.allPosts[0].name}</span>
+            </div>
             <div style={{ marginTop: "3%", marginBottom: "3%" }}>
               <span
                 style={{
@@ -74,7 +123,7 @@ class Profile extends Component {
                     lineHeight: "18px",
                   }}
                 >
-                  161
+                  {this.state.allPosts.length}
                 </span>{" "}
                 posts
               </span>
@@ -108,10 +157,12 @@ class Profile extends Component {
               </span>
             </div>
             <div style={{ fontSize: "16px", fontWeight: 600 }}>
-              {this.props.auth.user.name}
+              {this.state.allPosts[0].name}
+              <span class="btn-follow-logout">Follow</span>
               <span
                 onClick={this.logout}
-                style={{ marginLeft: "2rem", color: "blue", cursor: "pointer" }}
+                class="btn-follow-logout"
+                style={{ marginLeft: "1%", backgroundColor: "#E74C3C" }}
               >
                 Logout
               </span>
@@ -122,6 +173,37 @@ class Profile extends Component {
           </div>
           <br />
         </div>
+      );
+      myPosts = this.state.allPosts.map((post, index) => {
+        return (
+          <div key={"myPosts" + post.post_id}>
+            <img
+              style={{ cursor: "pointer" }}
+              src={post.imageUrl}
+              alt=""
+              onClick={() => this.openCommentModal(post, index)}
+            />
+          </div>
+        );
+      });
+    } else {
+      myPosts = (
+        <div align="center">
+          <p>Empty</p>
+        </div>
+      );
+    }
+    return (
+      <div>
+        {this.state.showCommentModal ? (
+          <CModal
+            postIndex={this.state.commentModalPostIndex}
+            showCommentModal={this.state.showCommentModal}
+            commentModalData={this.state.commentModalData}
+            closeCommentModal={this.closeCommentModal}
+          />
+        ) : null}
+        {headSection}
         <div className="all-Posts">{myPosts}</div>
       </div>
     );
@@ -133,4 +215,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { logoutUser, setMyPosts })(Profile);
+export default connect(mapStateToProps, {
+  logoutUser,
+  setMyPosts,
+  setAllPosts,
+})(Profile);

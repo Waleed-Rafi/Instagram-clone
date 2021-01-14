@@ -26,7 +26,8 @@ class Login extends Component {
     });
   };
 
-  submitHandler = () => {
+  submitHandler = (e) => {
+    e.preventDefault();
     this.props.loginUser(this.state, this.props.history);
   };
   render() {
@@ -43,29 +44,31 @@ class Login extends Component {
           {this.props.auth.errorMsg ? (
             <div className="login-error">{this.props.auth.errorMsg}</div>
           ) : null}
-          <div className="login-email">
-            <input
-              onChange={this.changeHandler}
-              name="email"
-              placeholder="Email"
-            />
-          </div>
-          <div className="login-password">
-            <input
-              onChange={this.changeHandler}
-              name="password"
-              type="password"
-              placeholder="Password"
-            />
-          </div>
-          <div>
-            <input
-              onClick={this.submitHandler}
-              className="login-btn"
-              type="button"
-              value="Log In"
-            />
-          </div>
+          <form>
+            <div className="login-email">
+              <input
+                onChange={this.changeHandler}
+                name="email"
+                placeholder="Email"
+              />
+            </div>
+            <div className="login-password">
+              <input
+                onChange={this.changeHandler}
+                name="password"
+                type="password"
+                placeholder="Password"
+              />
+            </div>
+            <div>
+              <input
+                onClick={this.submitHandler}
+                className="login-btn"
+                type="submit"
+                value="Log In"
+              />
+            </div>
+          </form>
         </div>
         <br />
         <div className="login-footer">

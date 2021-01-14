@@ -37,6 +37,18 @@
 }
 
 .all-Posts img {
-    height: 293px;
+    background-size: contain;
+    height: 285px;
     width: 293px;
+}
+
+.btn-follow-logout {
+    background-color: #0095f6;
+    padding: 3px 15px;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    margin-left: 5%;
+    cursor: pointer;
+    font-weight: 500;
 }

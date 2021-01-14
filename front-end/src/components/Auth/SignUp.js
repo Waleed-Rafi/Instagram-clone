@@ -47,7 +47,8 @@ class Signup extends Component {
     }
   };
 
-  submitHandler = () => {
+  submitHandler = (e) => {
+    e.preventDefault();
     console.log(this.state);
     this.props.signupUser(this.state, this.props.history);
   };
@@ -65,45 +66,47 @@ class Signup extends Component {
           {this.props.auth.errorMsg ? (
             <div className="signup-error">{this.props.auth.errorMsg}</div>
           ) : null}
-          <div className="Signup-email">
-            <input
-              onChange={this.changeHandler}
-              name="name"
-              type="text"
-              placeholder="User Name"
-            />
-          </div>
-          <div className="Signup-email">
-            <input
-              onChange={this.changeHandler}
-              name="email"
-              placeholder="Email"
-            />
-          </div>
-          <div className="Signup-password">
-            <input
-              onChange={this.changeHandler}
-              name="password"
-              type="password"
-              placeholder="Password"
-            />
-          </div>
-          <div className="Signup-password">
-            <input
-              onChange={this.changeFileHanlder}
-              type="file"
-              name="file"
-              accept="image/*"
-            />
-          </div>
-          <div>
-            <input
-              onClick={this.submitHandler}
-              className="Signup-btn"
-              type="button"
-              value="Sign Up"
-            />
-          </div>
+          <form>
+            <div className="Signup-email">
+              <input
+                onChange={this.changeHandler}
+                name="name"
+                type="text"
+                placeholder="User Name"
+              />
+            </div>
+            <div className="Signup-email">
+              <input
+                onChange={this.changeHandler}
+                name="email"
+                placeholder="Email"
+              />
+            </div>
+            <div className="Signup-password">
+              <input
+                onChange={this.changeHandler}
+                name="password"
+                type="password"
+                placeholder="Password"
+              />
+            </div>
+            <div className="Signup-password">
+              <input
+                onChange={this.changeFileHanlder}
+                type="file"
+                name="file"
+                accept="image/*"
+              />
+            </div>
+            <div>
+              <input
+                onClick={this.submitHandler}
+                className="Signup-btn"
+                type="submit"
+                value="Sign Up"
+              />
+            </div>
+          </form>
         </div>
         <br />
         <div className="Signup-footer">
