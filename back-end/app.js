@@ -3,7 +3,9 @@ require("dotenv").config(); //to access features of .env and run .env files alwa
 const helmet = require("helmet");
 require("./db/sql"); //running database
 
-const auth = require("./routes/auth");
+const registerUser = require("./routes/auth/register");
+const loginUser = require("./routes/auth/login");
+
 const createPost = require("./routes/posts/createPost");
 const allPosts = require("./routes/posts/allPosts");
 const likePost = require("./routes/posts/like");
@@ -30,13 +32,16 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/api", auth);
+app.use("/api", registerUser);
+app.use("/api", loginUser);
+
 app.use("/api/posts", createPost);
 app.use("/api/posts", allPosts);
 app.use("/api/posts", likePost);
 app.use("/api/posts", unlikePost);
 app.use("/api/posts", createComment);
 app.use("/api/posts", getComments);
+
 app.use("/api/posts", getProfile);
 app.use("/api/posts", searchProfiles);
 
