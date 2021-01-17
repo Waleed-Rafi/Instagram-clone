@@ -158,10 +158,10 @@ class Profile extends Component {
             </div>
             <div style={{ fontSize: "16px", fontWeight: 600 }}>
               {this.state.allPosts[0].name}
-              <span class="btn-follow-logout">Follow</span>
+              <span className="btn-follow-logout">Follow</span>
               <span
                 onClick={this.logout}
-                class="btn-follow-logout"
+                className="btn-follow-logout"
                 style={{ marginLeft: "1%", backgroundColor: "#E74C3C" }}
               >
                 Logout

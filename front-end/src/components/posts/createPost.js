@@ -5,17 +5,27 @@ import firebase from "../firebase/firebase";
 import { setAllPosts } from "../../actions/authActions";
 import "./createPost.css";
 
+let hashtags = [];
 class createPost extends Component {
   state = {
     description: "",
     imageUrl:
-      "https://pbs.twimg.com/profile_images/1222782643676368896/VJmUtX_e_400x400.jpg",
+      "https://oorwin.com/wp-content/themes/sydney-child/images/post-placeholder-medium.jpg",
     selectedFile: null,
   };
   changeHandler = (e) => {
     this.setState({
       description: e.target.value,
     });
+  };
+
+  extractHashtags = (myString) => {
+    var regexp = /#(\w+)/g;
+    var match = regexp.exec(myString);
+    while (match != null) {
+      hashtags.push(match[1]);
+      match = regexp.exec(myString);
+    }
   };
 
   imageChangeHandler = (e) => {
@@ -27,6 +37,7 @@ class createPost extends Component {
   };
 
   submitHandler = async () => {
+    this.extractHashtags(this.state.description);
     let url = null;
     if (this.state.selectedFile) {
       let upload = await firebase
@@ -80,15 +91,21 @@ class createPost extends Component {
       let data = {
         description: this.state.description,
         imageUrl: url ? url : this.state.imageUrl,
+        hashtags: hashtags,
       };
       axios.post("/api/posts/create", data).then((res) => {
         console.log(res.data.message);
         this.setState({
           description: "",
+          imageUrl:
+            "https://oorwin.com/wp-content/themes/sydney-child/images/post-placeholder-medium.jpg",
+          selectedFile: null,
         });
+        hashtags = [];
       });
     }
   };
+
   render() {
     return (
       <div style={{ position: "fixed" }}>
