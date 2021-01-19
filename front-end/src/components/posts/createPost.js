@@ -108,87 +108,31 @@ class createPost extends Component {
 
   render() {
     return (
-      <div style={{ position: "fixed" }}>
-        <div className="head-post">
-          <img
-            alt="profile"
-            className="profile"
-            src={this.props.auth.user.profilePic}
-          />
-          <span
-            style={{
-              display: "block",
-              marginLeft: "2.7rem",
-              marginTop: "-1.7rem",
-              fontFamily: "Segoe UI",
-              color: "rgb(38, 38, 38)",
-              fontSize: "14px",
-              fontWeight: "600",
-            }}
-          >
-            {this.props.auth.user.name}
-          </span>
-        </div>
-        <div className="all-posts" style={{ width: "65%" }}>
+      <div className="create-new">
+        <div>
           <textarea
-            style={{
-              // border: "none",
-              outline: "none",
-              overflow: "hidden",
-              resize: "none",
-              fontFamily: "Segoe UI",
-              fontSize: "14px",
-              border: "1px solid silver",
-            }}
-            name="Type Something to Post"
-            id=""
-            cols="40"
-            rows="4"
+            className="upload-text-area"
+            cols="55"
+            rows="3"
             placeholder="Type Something to Post"
             value={this.state.description}
             onChange={this.changeHandler}
           ></textarea>
         </div>
-        <div
-          style={{
-            marginTop: "-1%",
-            width: "90%",
-            position: "relative",
-            border: "1px solid silver",
-            padding: "7px 12px",
-          }}
-        >
-          {/* <img
-            src={uploadImage}
-            style={{
-              width: "7%",
-              outline: "none",
-              padding: "0.3rem 0 0rem 1rem",
-              paddingLeft: "10px",
-            }}
-          ></img> */}
-          <hr
-            style={{ marginTop: "-0.45rem" }}
-            align="left"
-            // hidden
-            id="file-loader"
-          />
-          <label>
+        <div className="upload-post-btn">
+          <label className="upload">
             Upload
             <input
               hidden
-              className="upload-file"
               type="file"
+              accept="image/png, image/jpeg"
               onChange={this.imageChangeHandler}
             />
           </label>
 
-          <button
-            style={{ top: "0.5rem", marginLeft: "100%" }}
-            onClick={this.submitHandler}
-          >
+          <a className="postBtn" onClick={this.submitHandler}>
             Post
-          </button>
+          </a>
         </div>
       </div>
     );

@@ -69,18 +69,14 @@ class App extends Component {
                 <div>
                   <div className="app">
                     <Header />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
                   </div>
                   <div className="Posts">
-                    <div>
+                    <div style={{ marginTop: "5%" }}>
                       <Home />
                     </div>
-                    <div className="create-Post">
+                    {/* <div className="create-Post" style={{ marginTop: "9%" }}>
                       <CreatePost />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               );

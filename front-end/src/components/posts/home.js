@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import CModal from "../Modals/Comments";
 import "./home.css";
 import { Link, NavLink } from "react-router-dom";
+import CreatePost from "./createPost";
 
 class home extends Component {
   token = null;
@@ -35,11 +36,7 @@ class home extends Component {
   };
 
   componentWillReceiveProps = (props) => {
-    console.log(props);
     if (props.auth.allPosts.length !== this.state.allPosts) {
-      // console.log(this.props.auth.allPosts);
-      console.log(props.auth.allPosts);
-      console.log(this.state.allPosts);
       this.setState({
         allPosts: props.auth.allPosts,
       });
@@ -162,7 +159,6 @@ class home extends Component {
     ) {
       let temp2 = [...this.props.auth.myPosts];
       let i = temp2.findIndex((d) => d.post_id === temp[index].post_id);
-      console.log(i);
       allComments.map((data) => {
         temp[index].comments.unshift(data);
         temp2[i].comments.unshift(data);
@@ -407,7 +403,11 @@ class home extends Component {
     }
     return (
       <div className="posts">
-        {all}
+        {/* <div style={{}}></div> */}
+        <div>
+          <CreatePost />
+          {all}
+        </div>
         {this.state.showCommentModal ? (
           <CModal
             postIndex={this.state.commentModalPostIndex}
