@@ -20,6 +20,7 @@ import Error from "./components/404/Error";
 import jwt_decode from "jwt-decode";
 import { connect } from "react-redux";
 import { loginAfter } from "./actions/authActions";
+import SuggestedUsers from "./components/SuggestedUsers/SuggestedUsers";
 
 class App extends Component {
   state = {
@@ -74,9 +75,14 @@ class App extends Component {
                     <div style={{ marginTop: "5%" }}>
                       <Home />
                     </div>
-                    {/* <div className="create-Post" style={{ marginTop: "9%" }}>
-                      <CreatePost />
-                    </div> */}
+                    <div className="create-Post" style={{ marginTop: "9%" }}>
+                      {/* <CreatePost /> */}
+                      <SuggestedUsers />
+                      <SuggestedUsers />
+                      <SuggestedUsers />
+                      <SuggestedUsers />
+                      <SuggestedUsers />
+                    </div>
                   </div>
                 </div>
               );
