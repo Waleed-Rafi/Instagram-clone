@@ -11,7 +11,7 @@ class RecentJoins extends Component {
     axios.defaults.headers["x-auth-token"] = await localStorage.getItem(
       "instagram"
     );
-    const recentJoins = await axios.get("/api/recentJoins");
+    const recentJoins = await axios.get("/api/user/recentJoins");
     console.log(recentJoins.data.users);
     this.setState({
       recentJoins: recentJoins.data.users,

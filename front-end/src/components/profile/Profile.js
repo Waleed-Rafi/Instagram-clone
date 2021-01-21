@@ -93,6 +93,13 @@ class Profile extends Component {
     });
   };
 
+  followUser = async () => {
+    const response = await axios.post("/api/user/follow", {
+      following_id: this.state.userId,
+    });
+    console.log(response.data);
+  };
+
   render() {
     let myPosts = null;
     let headSection = null;
@@ -159,7 +166,9 @@ class Profile extends Component {
             <div style={{ fontSize: "16px", fontWeight: 600 }}>
               {this.state.allPosts[0].name}
               {this.state.userId !== this.props.auth.user.id && (
-                <span className="btn-follow-logout">Follow</span>
+                <span className="btn-follow-logout" onClick={this.followUser}>
+                  Follow
+                </span>
               )}
               {this.state.userId === this.props.auth.user.id && (
                 <span

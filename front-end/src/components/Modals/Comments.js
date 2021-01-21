@@ -175,7 +175,7 @@ class MoveModal extends Component {
               <hr />
               <div
                 style={{
-                  overflowY: "scroll",
+                  overflowY: "auto",
                   height: "30rem",
                   marginTop: "4%",
                 }}
