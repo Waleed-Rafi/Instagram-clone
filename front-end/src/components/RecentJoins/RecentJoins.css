@@ -6,6 +6,11 @@
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.recent-heading {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 600;
+}
+
 .s-user-name-container {
     margin-left: 0.5rem;
     margin-top: 0.3rem;

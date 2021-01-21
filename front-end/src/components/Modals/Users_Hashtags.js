@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 
 const customStyles = {
   content: {
-    top: "39%",
-    left: "50%",
+    top: "31.6%",
+    left: "46.6%",
     right: "auto",
     bottom: "auto",
     marginRight: "-50%",
@@ -108,7 +108,7 @@ class MoveModal extends Component {
         >
           <div
             style={{
-              overflowY: "scroll",
+              overflowY: "hidden",
               height: "30rem",
               marginTop: "4%",
             }}

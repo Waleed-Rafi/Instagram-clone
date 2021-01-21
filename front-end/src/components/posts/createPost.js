@@ -40,50 +40,50 @@ class createPost extends Component {
     this.extractHashtags(this.state.description);
     let url = null;
     if (this.state.selectedFile) {
-      let upload = await firebase
+      firebase
         .storage()
         .ref()
         .child(this.state.selectedFile.name)
-        .put(this.state.selectedFile);
-      // .then((snapshot) => snapshot.ref.getDownloadURL())
-      // .then(async (res) => {
-      //   url = res;
-      //   axios.defaults.headers.common["x-auth-token"] = localStorage.getItem(
-      //     "instagram"
-      //   );
-      //   let data = {
-      //     description: this.state.description,
-      //     imageUrl: url ? url : this.state.imageUrl,
-      //   };
-      //   await axios.post("/api/posts/create", data).then((res) => {
-      //     axios.get("/api/posts/all").then((res) => {
-      //       this.props.setAllPosts(res.data);
-      //       this.setState({
-      //         description: "",
-      //         selectedFile: null,
-      //       });
-      //     });
-      //   });
-      // });
-      upload.on(
-        "state_changed",
-        function (snapshot) {
-          var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-          let bar = document.getElementById("file-loader");
-          bar.style.border = "4px solid green";
-          bar.style.width = `${progress}%`;
-          if (progress === 100) bar.style.border = "none";
-        },
-        function () {
-          // Handle successful uploads on complete
-          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-          upload.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-            console.log("File available at", downloadURL);
+        .put(this.state.selectedFile)
+        .then((snapshot) => snapshot.ref.getDownloadURL())
+        .then(async (res) => {
+          url = res;
+          axios.defaults.headers.common["x-auth-token"] = localStorage.getItem(
+            "instagram"
+          );
+          let data = {
+            description: this.state.description,
+            imageUrl: url ? url : this.state.imageUrl,
+          };
+          await axios.post("/api/posts/create", data).then((res) => {
+            axios.get("/api/posts/all").then((res) => {
+              this.props.setAllPosts(res.data);
+              this.setState({
+                description: "",
+                selectedFile: null,
+              });
+            });
           });
-        }
-      );
+        });
+      // upload.on(
+      //   "state_changed",
+      //   function (snapshot) {
+      //     var progress =
+      //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+      //     let bar = document.getElementById("file-loader");
+      //     bar.style.border = "4px solid green";
+      //     bar.style.width = `${progress}%`;
+      //     if (progress === 100) bar.style.border = "none";
+      //   },
+      //   function () {
+      //     // Handle successful uploads on complete
+      //     // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+      //     upload.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+      //       console.log("File available at", downloadURL);
+      //     });
+      //   }
+      // );
     } else {
       axios.defaults.headers.common["x-auth-token"] = localStorage.getItem(
         "instagram"

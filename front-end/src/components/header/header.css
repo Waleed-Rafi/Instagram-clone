@@ -35,45 +35,23 @@ li {
 }
 
 .container-1 input#search {
+    position: absolute;
+    top: -2px;
+    left: 2.5rem;
     width: 200px;
     height: 30px;
-    background: #FFFFFF;
-    border: 1px solid #C5C4C4;
+    background: #ffffff;
+    border: 1px solid #c5c4c4;
     font-size: 10pt;
     text-align: center;
     color: #000000;
-    -webkit-border-radius: 25px;
-    -moz-border-radius: 25px;
     border-radius: 25px;
-    -webkit-transition: background .55s ease;
-    -moz-transition: background .55s ease;
-    -ms-transition: background .55s ease;
-    -o-transition: background .55s ease;
-    transition: background .55s ease;
+    transition: background 0.55s ease;
 }
 
-.container-1 input#search::-webkit-input-placeholder {
-    color: #A8A7A7;
-    letter-spacing: 1px;
-    font-size: 12px;
-}
-
-.container-1 input#search:-moz-placeholder {
+.container-1 input#search {
     /* Firefox 18- */
-    color: #A8A7A7;
-    letter-spacing: 1px;
-    font-size: 12px;
-}
-
-.container-1 input#search::-moz-placeholder {
-    /* Firefox 19+ */
-    color: #A8A7A7;
-    letter-spacing: 1px;
-    font-size: 12px;
-}
-
-.container-1 input#search:-ms-input-placeholder {
-    color: #A8A7A7;
+    color: #a8a7a7;
     letter-spacing: 1px;
     font-size: 12px;
 }
@@ -82,26 +60,9 @@ input:focus::-webkit-input-placeholder {
     color: transparent;
 }
 
-input:focus:-moz-placeholder {
+input:focus {
     color: transparent;
 }
-
-
-/* Firefox 18- */
-
-input:focus::-moz-placeholder {
-    color: transparent;
-}
-
-
-/* Firefox 19+ */
-
-input:focus:-ms-input-placeholder {
-    color: transparent;
-}
-
-
-/* oldIE ;) */
 
 .container-1 input#search:hover,
 .container-1 input#search:focus,

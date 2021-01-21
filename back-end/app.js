@@ -16,6 +16,8 @@ const getComments = require("./routes/posts/getComments");
 const getProfile = require("./routes/profile/profile");
 const searchProfiles = require("./routes/profile/searchProfiles");
 
+const recentJoins = require("./routes/posts/recentJoins");
+
 const app = express();
 app.use(express.json()); //convert data of incoming requests to json
 app.use(helmet()); //for securing our application and preventing from attacks like xss attacks.
@@ -44,6 +46,8 @@ app.use("/api/posts", getComments);
 
 app.use("/api/posts", getProfile);
 app.use("/api/posts", searchProfiles);
+
+app.use("/api", recentJoins);
 
 app.listen(PORT, () => {
     console.log(`Server is up on port ${PORT}`);
