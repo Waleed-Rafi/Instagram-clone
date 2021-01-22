@@ -4,16 +4,18 @@ import {
     CLEAR_ERRORS,
     LOGOUT_USER,
     SET_MY_POSTS,
-    SET_ALL_POSTS
-} from '../actions/actionTypes'
+    SET_ALL_POSTS,
+    SET_MY_FOLLOWING,
+} from "../actions/actionTypes";
 
 const initialState = {
     isAuthenticated: false,
     user: {},
     errorMsg: null,
     allPosts: [],
-    myPosts: []
-}
+    myPosts: [],
+    myFollowing: [],
+};
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -21,50 +23,58 @@ const reducer = (state = initialState, action) => {
             {
                 return {
                     ...state,
-                    isAuthenticated: action.payload.id && action.payload.email && action.payload.password ? true : false,
-                    user: action.payload
-                }
+                    isAuthenticated: action.payload.id && action.payload.email && action.payload.password ?
+                        true :
+                        false,
+                    user: action.payload,
+                };
             }
         case SET_ERRORS:
             {
                 return {
                     ...state,
-                    errorMsg: action.payload.error
-                }
+                    errorMsg: action.payload.error,
+                };
             }
         case CLEAR_ERRORS:
             {
                 return {
                     ...state,
-                    errorMsg: null
-                }
+                    errorMsg: null,
+                };
             }
         case LOGOUT_USER:
             {
                 return {
                     ...state,
                     isAuthenticated: false,
-                    user: {}
-                }
+                    user: {},
+                };
             }
         case SET_MY_POSTS:
             {
                 return {
                     ...state,
-                    myPosts: action.payload
-                }
+                    myPosts: action.payload,
+                };
             }
         case SET_ALL_POSTS:
             {
                 return {
                     ...state,
-                    allPosts: action.payload
-                }
+                    allPosts: action.payload,
+                };
+            }
+        case SET_MY_FOLLOWING:
+            {
+                return {
+                    ...state,
+                    myFollowing: action.payload,
+                };
             }
         default:
             return state;
     }
+};
 
-}
-
-export default reducer
+export default reducer;

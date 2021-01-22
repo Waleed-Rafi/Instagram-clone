@@ -7,7 +7,8 @@ import {
     CLEAR_ERRORS,
     LOGOUT_USER,
     SET_MY_POSTS,
-    SET_ALL_POSTS
+    SET_ALL_POSTS,
+    SET_MY_FOLLOWING,
 } from "./actionTypes";
 
 export const loginUser = (userData, history) => {
@@ -22,7 +23,7 @@ export const loginUser = (userData, history) => {
                 if (res.data.token) {
                     localStorage.setItem("instagram", res.data.token);
                     const decoded = jwt_decode(res.data.token);
-                    clearErrors()
+                    clearErrors();
                     dispatch({
                         type: SET_CURRENT_USER,
                         payload: decoded,
@@ -31,8 +32,8 @@ export const loginUser = (userData, history) => {
                 } else {
                     dispatch({
                         type: SET_ERRORS,
-                        payload: res.data
-                    })
+                        payload: res.data,
+                    });
                 }
             })
             .catch((err) => {
@@ -47,24 +48,24 @@ export const signupUser = (userData, history) => {
             name: userData.name,
             email: userData.email,
             password: userData.password,
-            profilePic: userData.profilePic
+            profilePic: userData.profilePic,
         };
         axios
             .post("/api/register", data)
             .then((res) => {
                 if (res.data.message) {
                     dispatch({
-                        type: CLEAR_ERRORS
-                    })
-                    history.push('/login')
+                        type: CLEAR_ERRORS,
+                    });
+                    history.push("/login");
                 } else {
                     let data = {
-                        error: res.data.error ? res.data.error : res.data.errors[0].msg
-                    }
+                        error: res.data.error ? res.data.error : res.data.errors[0].msg,
+                    };
                     dispatch({
                         type: SET_ERRORS,
-                        payload: data
-                    })
+                        payload: data,
+                    });
                 }
             })
             .catch((err) => {
@@ -73,24 +74,23 @@ export const signupUser = (userData, history) => {
     };
 };
 
-
 export const clearErrors = () => {
     return (dispatch) => {
         dispatch({
-            type: CLEAR_ERRORS
-        })
-    }
-}
+            type: CLEAR_ERRORS,
+        });
+    };
+};
 
 export const logoutUser = () => {
     return (dispatch) => {
-        localStorage.removeItem('instagram')
+        localStorage.removeItem("instagram");
         dispatch({
-            type: LOGOUT_USER
-        })
-        window.location.href = '/login'
-    }
-}
+            type: LOGOUT_USER,
+        });
+        window.location.href = "/login";
+    };
+};
 
 export const loginAfter = () => {
     return (dispatch) => {
@@ -106,32 +106,41 @@ export const loginAfter = () => {
             ) {
                 dispatch({
                     type: SET_CURRENT_USER,
-                    payload: decoded
-                })
+                    payload: decoded,
+                });
             }
         } else {
             dispatch({
-                type: LOGOUT_USER
-            })
+                type: LOGOUT_USER,
+            });
         }
-    }
-}
+    };
+};
 
 //Posts
 export const setMyPosts = (payload) => {
     return (dispatch) => {
         dispatch({
             type: SET_MY_POSTS,
-            payload
-        })
-    }
-}
+            payload,
+        });
+    };
+};
 
 export const setAllPosts = (payload) => {
     return (dispatch) => {
         dispatch({
             type: SET_ALL_POSTS,
-            payload
-        })
-    }
-}
+            payload,
+        });
+    };
+};
+
+export const setMyFollowing = (payload) => {
+    return (dispatch) => {
+        dispatch({
+            type: SET_MY_FOLLOWING,
+            payload,
+        });
+    };
+};

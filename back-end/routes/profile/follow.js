@@ -29,4 +29,20 @@ router.post("/follow", auth, async(req, res) => {
     });
 });
 
+router.get("/myFollowing", auth, async(req, res) => {
+    const sql = "Select * FROM followers WHERE follower_id = ?";
+    db.query(sql, req.user[0].id, async(err, result) => {
+        if (err) {
+            return res.json({
+                error: "Failed to Fetch...",
+            });
+        }
+        console.log(result);
+        res.json({
+            message: "Fetched Successfully",
+            data: result,
+        });
+    });
+});
+
 module.exports = router;

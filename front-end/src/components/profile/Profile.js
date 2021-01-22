@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import "./profile.css";
-import { logoutUser, setMyPosts, setAllPosts } from "../../actions/authActions";
+import {
+  logoutUser,
+  setMyPosts,
+  setAllPosts,
+  setMyFollowing,
+} from "../../actions/authActions";
 import { connect } from "react-redux";
 import CModal from "../Modals/Comments";
 import axios from "../../axios/axios";
@@ -98,6 +103,32 @@ class Profile extends Component {
       following_id: this.state.userId,
     });
     console.log(response.data);
+    if (response.data.message) {
+      this.props.setMyFollowing([
+        ...this.props.auth.myFollowing,
+        {
+          follower_id: this.props.auth.user.id,
+          following_id: this.state.userId,
+        },
+      ]);
+    }
+  };
+
+  unFollowUser = async () => {
+    axios.defaults.headers["x-auth-token"] = await localStorage.getItem(
+      "instagram"
+    );
+    const response = await axios.post("/api/user/unFollow", {
+      following_id: this.state.userId,
+    });
+    if (response.data.message) {
+      let filteredFollowings = [...this.props.auth.myFollowing].filter(
+        (followings) => {
+          return followings.following_id !== this.state.userId;
+        }
+      );
+      this.props.setMyFollowing(filteredFollowings);
+    }
   };
 
   render() {
@@ -165,11 +196,25 @@ class Profile extends Component {
             </div>
             <div style={{ fontSize: "16px", fontWeight: 600 }}>
               {this.state.allPosts[0].name}
-              {this.state.userId !== this.props.auth.user.id && (
-                <span className="btn-follow-logout" onClick={this.followUser}>
-                  Follow
-                </span>
-              )}
+              {this.state.userId !== this.props.auth.user.id &&
+                (this.props.auth.myFollowing.some(
+                  (data) => data["following_id"] == this.findUserId()
+                ) ? (
+                  <span
+                    className="btn-follow-logout"
+                    onClick={this.unFollowUser}
+                    style={{
+                      backgroundColor: "white",
+                      color: "dodgerblue",
+                    }}
+                  >
+                    Following
+                  </span>
+                ) : (
+                  <span className="btn-follow-logout" onClick={this.followUser}>
+                    Follow
+                  </span>
+                ))}
               {this.state.userId === this.props.auth.user.id && (
                 <span
                   onClick={this.logout}
@@ -233,4 +278,5 @@ export default connect(mapStateToProps, {
   logoutUser,
   setMyPosts,
   setAllPosts,
+  setMyFollowing,
 })(Profile);

@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import axios from "../../axios/axios";
-import { setAllPosts, setMyPosts } from "../../actions/authActions";
+import {
+  setAllPosts,
+  setMyPosts,
+  setMyFollowing,
+} from "../../actions/authActions";
 import { connect } from "react-redux";
 import CModal from "../Modals/Comments";
 import "./home.css";
@@ -19,6 +23,7 @@ class home extends Component {
 
   componentDidMount = async () => {
     this.token = localStorage.getItem("instagram");
+    await this.myFollowing();
     if (!this.props.auth.allPosts.length) {
       axios.defaults.headers.common["x-auth-token"] = this.token;
       axios.get("/api/posts/all").then((res) => {
@@ -33,6 +38,15 @@ class home extends Component {
         allPosts: this.props.auth.allPosts,
       });
     }
+  };
+
+  myFollowing = async () => {
+    axios.defaults.headers.common["x-auth-token"] = localStorage.getItem(
+      "instagram"
+    );
+    const response = await axios.get("/api/user/myFollowing");
+    console.log(response.data);
+    this.props.setMyFollowing(response.data.data);
   };
 
   componentWillReceiveProps = (props) => {
@@ -427,4 +441,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setAllPosts, setMyPosts })(home);
+export default connect(mapStateToProps, {
+  setAllPosts,
+  setMyPosts,
+  setMyFollowing,
+})(home);

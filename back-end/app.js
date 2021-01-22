@@ -19,6 +19,7 @@ const searchProfiles = require("./routes/profile/searchProfiles");
 const recentJoins = require("./routes/profile/recentJoins");
 
 const follow = require("./routes/profile/follow");
+const unFollow = require("./routes/profile/unfollow");
 
 const app = express();
 app.use(express.json()); //convert data of incoming requests to json
@@ -52,6 +53,7 @@ app.use("/api/posts", searchProfiles);
 app.use("/api/user", recentJoins);
 
 app.use("/api/user", follow);
+app.use("/api/user", unFollow);
 
 app.listen(PORT, () => {
     console.log(`Server is up on port ${PORT}`);
