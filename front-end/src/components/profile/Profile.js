@@ -30,46 +30,24 @@ class Profile extends Component {
   componentDidMount = async () => {
     let userId = parseInt(this.findUserId());
 
-    if (this.props.auth.myPosts.length > 0) {
-      if (this.props.auth.myPosts[0].id !== userId) {
-        axios.defaults.headers.common["x-auth-token"] = localStorage.getItem(
-          "instagram"
-        );
-        axios.get(`/api/posts/profile/${userId}`).then((res) => {
-          this.props.setMyPosts(res.data);
-          this.setState({
-            allPosts: res.data,
-            userId: userId,
-          });
-        });
-      } else {
-        console.log("from redux");
-        this.setState({
-          allPosts: this.props.auth.myPosts,
-          userId: userId,
-        });
-      }
-    } else if (!this.props.auth.myPosts.length) {
-      axios.defaults.headers.common["x-auth-token"] = localStorage.getItem(
-        "instagram"
-      );
-      axios.get(`/api/posts/profile/${userId}`).then((res) => {
-        this.props.setMyPosts(res.data);
-        this.setState({
-          allPosts: res.data,
-          userId: userId,
-        });
-      });
-    } else if (
-      this.props.auth.myPosts.length > 0 &&
-      this.props.auth.myPosts[0].id === userId
-    ) {
-      console.log("from redux");
+    // if (this.props.auth.user.id !== userId) {
+    axios.defaults.headers.common["x-auth-token"] = localStorage.getItem(
+      "instagram"
+    );
+    axios.get(`/api/posts/profile/${userId}`).then((res) => {
       this.setState({
-        allPosts: this.props.auth.myPosts,
+        user: res.data.user,
+        allPosts: res.data.result,
         userId: userId,
       });
-    }
+    });
+    // } else {
+    //   this.setState({
+    //     user: this.props.auth.myPosts.user,
+    //     allPosts: this.props.auth.myPosts.result,
+    //     userId: userId,
+    //   });
+    // }
   };
 
   openCommentModal = (post, index) => {
@@ -134,19 +112,19 @@ class Profile extends Component {
   render() {
     let myPosts = null;
     let headSection = null;
-    if (this.state.allPosts.length) {
+    if (this.state.user) {
       headSection = (
         <div className="complete-profile">
           <div>
             <img
               alt="profile"
               className="profile-pic"
-              src={this.state.allPosts[0].profilePic}
+              src={this.state.user.profilePic}
             />
           </div>
           <div className="user-detail">
             <div>
-              <span className="user-name">{this.state.allPosts[0].name}</span>
+              <span className="user-name">{this.state.user.name}</span>
             </div>
             <div style={{ marginTop: "3%", marginBottom: "3%" }}>
               <span
@@ -195,7 +173,7 @@ class Profile extends Component {
               </span>
             </div>
             <div style={{ fontSize: "16px", fontWeight: 600 }}>
-              {this.state.allPosts[0].name}
+              {this.state.user.name}
               {this.state.userId !== this.props.auth.user.id &&
                 (this.props.auth.myFollowing.some(
                   (data) => data["following_id"] == this.findUserId()
@@ -233,24 +211,26 @@ class Profile extends Component {
           <br />
         </div>
       );
-      myPosts = this.state.allPosts.map((post, index) => {
-        return (
-          <div key={"myPosts" + post.post_id}>
-            <img
-              style={{ cursor: "pointer" }}
-              src={post.imageUrl}
-              alt=""
-              onClick={() => this.openCommentModal(post, index)}
-            />
+      if (this.state.allPosts.length) {
+        myPosts = this.state.allPosts.map((post, index) => {
+          return (
+            <div key={"myPosts" + post.post_id}>
+              <img
+                style={{ cursor: "pointer" }}
+                src={post.imageUrl}
+                alt=""
+                onClick={() => this.openCommentModal(post, index)}
+              />
+            </div>
+          );
+        });
+      } else {
+        myPosts = (
+          <div>
+            <p>Empty</p>
           </div>
         );
-      });
-    } else {
-      myPosts = (
-        <div align="center">
-          <p>Empty</p>
-        </div>
-      );
+      }
     }
     return (
       <div>
