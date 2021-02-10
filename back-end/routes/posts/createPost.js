@@ -53,7 +53,8 @@ router.post(
             description: req.body.description,
             user_id: req.user[0].id,
         };
-        // const allHashtags = [...req.body.hashtags];
+        const allHashtags = [...req.body.hashtags];
+        console.log(allHashtags);
 
         let sql = "INSERT INTO posts SET ? ";
 
