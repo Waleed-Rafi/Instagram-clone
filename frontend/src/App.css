@@ -1,0 +1,21 @@
+.Posts {
+    display: grid;
+    grid-template-columns: 100% 50%;
+    overflow-x: hidden;
+}
+
+.create-Post {
+    margin-left: -75%;
+}
+
+.app {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.notification-head {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(38, 38, 38);
+    margin-top: -1rem;
+    font-weight: 600;
+    font-size: 28px;
+}

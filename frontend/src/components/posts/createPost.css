@@ -1,0 +1,38 @@
+.create-new {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1%;
+}
+
+.upload-text-area {
+    outline-color: blueviolet;
+    resize: none;
+    font-size: 20px;
+    border: 1px solid silver;
+    border-radius: 5px;
+}
+
+.upload-post-btn {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.upload {
+    padding: 5px 20px;
+    background-color: #138d75;
+    color: white;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.postBtn {
+    margin-top: 15px;
+    display: block;
+    text-decoration: none;
+    padding: 5px 20px;
+    background-color: #2e86c1;
+    color: white;
+    border-radius: 3px;
+    text-align: center;
+    cursor: pointer;
+}
