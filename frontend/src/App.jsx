@@ -2,11 +2,9 @@ import React, { Component } from "react";
 import "./App.css";
 import Header from "./components/header/header";
 import Home from "./components/posts/home";
-import CreatePost from "./components/posts/createPost";
 import { Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
 import photo0 from "./assets/images/photo.jpg";
 import photo1 from "./assets/images/photo2.jpg";
-import photo2 from "./assets/images/photo3.jpg";
 import photo3 from "./assets/images/photo4.jpg";
 import photo4 from "./assets/images/photo5.jpg";
 import photo5 from "./assets/images/photo6.jpg";
@@ -76,7 +74,6 @@ class App extends Component {
                       <Home />
                     </div>
                     <div className="create-Post" style={{ marginTop: "9%" }}>
-                      {/* <CreatePost /> */}
                       <SuggestedUsers />
                     </div>
                   </div>
@@ -97,17 +94,7 @@ class App extends Component {
                     <br />
                     <br />
                   </div>
-                  <Profile
-                  // postUserName="Waleed_Rafi"
-                  // postUserImage={photo0}
-                  // postUserImage1={photo0}
-                  // postUserImage2={photo1}
-                  // postUserImage3={photo2}
-                  // postUserImage4={photo4}
-                  // postUserImage5={photo5}
-                  // postUserImage6={photo6}
-                  // postUserImage7={photo7}
-                  />
+                  <Profile />
                 </div>
               );
             }}

@@ -73,9 +73,8 @@ class createPost extends Component {
           uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
             console.log("File available at", downloadURL);
             url = downloadURL;
-            axios.defaults.headers.common[
-              "x-auth-token"
-            ] = localStorage.getItem("instagram");
+            axios.defaults.headers.common["x-auth-token"] =
+              localStorage.getItem("instagram");
             let data = {
               description: this.state.description,
               imageUrl: url ? url : this.state.imageUrl,
@@ -89,8 +88,7 @@ class createPost extends Component {
 
                   Swal.fire({
                     title: "Uploaded Successfully",
-                    text:
-                      "Your post is now live your friends can see your post",
+                    text: "Your post is now live your friends can see your post",
                     icon: "success",
                     showConfirmButton: false,
                     timer: 1000,
@@ -115,9 +113,8 @@ class createPost extends Component {
         }
       );
     } else {
-      axios.defaults.headers.common["x-auth-token"] = localStorage.getItem(
-        "instagram"
-      );
+      axios.defaults.headers.common["x-auth-token"] =
+        localStorage.getItem("instagram");
       let data = {
         description: this.state.description,
         imageUrl: url ? url : this.state.imageUrl,
@@ -166,9 +163,9 @@ class createPost extends Component {
               />
             </label>
 
-            <a className="postBtn" onClick={this.submitHandler}>
+            <div className="postBtn" onClick={this.submitHandler}>
               Post
-            </a>
+            </div>
           </div>
         </div>
       </>

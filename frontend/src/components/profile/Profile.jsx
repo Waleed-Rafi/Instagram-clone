@@ -9,7 +9,8 @@ import {
 import { connect } from "react-redux";
 import CModal from "../Modals/Comments";
 import axios from "../../axios/axios";
-import { auth } from "firebase";
+
+const title = document.title;
 
 class Profile extends Component {
   state = {
@@ -34,19 +35,17 @@ class Profile extends Component {
     axios.defaults.headers.common["x-auth-token"] =
       localStorage.getItem("instagram");
     axios.get(`/api/posts/profile/${userId}`).then((res) => {
+      document.title = "Profile " + res.data.user.name;
       this.setState({
         user: res.data.user,
         allPosts: res.data.result,
         userId: userId,
       });
     });
-    // } else {
-    //   this.setState({
-    //     user: this.props.auth.myPosts.user,
-    //     allPosts: this.props.auth.myPosts.result,
-    //     userId: userId,
-    //   });
-    // }
+  };
+
+  componentWillUnmount = async () => {
+    document.title = title;
   };
 
   openCommentModal = (post, index) => {
@@ -176,22 +175,39 @@ class Profile extends Component {
             </div>
             <div style={{ fontSize: "16px", fontWeight: 600 }}>
               {this.state.user.name}
+              <span
+                onClick={this.logout}
+                className="btn-follow-logout"
+                style={{
+                  marginLeft: "4%",
+                  backgroundColor: "#fff",
+                  color: "#000",
+                  border: "1px solid gray",
+                }}
+              >
+                Message
+              </span>
               {this.state.userId !== this.props.auth.user.id &&
                 (this.props.auth.myFollowing.some(
-                  (data) => data["following_id"] == this.findUserId()
+                  (data) => data["following_id"] === this.findUserId()
                 ) ? (
                   <span
                     className="btn-follow-logout"
-                    onClick={this.unFollowUser}
+                    onClick={this.unFollowUser.bind()}
                     style={{
                       backgroundColor: "white",
                       color: "dodgerblue",
+                      marginLeft: "3%",
                     }}
                   >
                     Following
                   </span>
                 ) : (
-                  <span className="btn-follow-logout" onClick={this.followUser}>
+                  <span
+                    className="btn-follow-logout"
+                    onClick={this.followUser.bind()}
+                    style={{ marginLeft: "3%" }}
+                  >
                     Follow
                   </span>
                 ))}
@@ -199,14 +215,14 @@ class Profile extends Component {
                 <span
                   onClick={this.logout}
                   className="btn-follow-logout"
-                  style={{ marginLeft: "1%", backgroundColor: "#E74C3C" }}
+                  style={{ marginLeft: "3%", backgroundColor: "#E74C3C" }}
                 >
                   Logout
                 </span>
               )}
             </div>
 
-            <div style={{ width: "80%" }}>
+            <div style={{ width: "80%", marginTop: "15px" }}>
               <hr />
             </div>
           </div>

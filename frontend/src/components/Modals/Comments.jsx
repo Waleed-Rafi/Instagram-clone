@@ -3,7 +3,6 @@ import axios from "../../axios/axios";
 import Modal from "react-modal";
 import { connect } from "react-redux";
 import "./Comments.css";
-import AppInput from "../posts/AppInput";
 
 const customStyles = {
   content: {
