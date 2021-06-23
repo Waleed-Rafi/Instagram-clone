@@ -11,7 +11,6 @@ router.post("/follow", auth, async(req, res) => {
     //     FOREIGN KEY(follower_id) REFERENCES users(id),
     //     FOREIGN KEY(following_id) REFERENCES users(id)
     // );
-    console.log(req.body.following_id);
     const data = {
         follower_id: req.user[0].id,
         following_id: req.body.following_id,
@@ -37,7 +36,6 @@ router.get("/myFollowing", auth, async(req, res) => {
                 error: "Failed to Fetch...",
             });
         }
-        console.log(result);
         res.json({
             message: "Fetched Successfully",
             data: result,

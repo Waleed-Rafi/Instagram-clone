@@ -3,7 +3,6 @@ const router = express.Router();
 const db = require("../../db/sql");
 const { validationResult, check } = require("express-validator");
 const auth = require("../../middleware/auth");
-const { map } = require("p-iteration");
 
 router.post(
     "/create",
@@ -53,81 +52,128 @@ router.post(
             description: req.body.description,
             user_id: req.user[0].id,
         };
-        // const allHashtags = [...req.body.hashtags];
-        // console.log(allHashtags);
+        const allHashtags = [...req.body.hashtags];
+        let post_id = null;
 
         let sql = "INSERT INTO posts SET ? ";
+        let checkSQL = "SELECT * FROM hashtag WHERE H_TITLE IN ";
+        let hashSQL = "INSERT INTO hashtag(H_TITLE) VALUES ";
+        let postHashSQL = "INSERT INTO post_hashtag(p_id,h_id) VALUES ";
+        let newHashtags = [];
+        let hashtagsInsertIDs = [];
 
-        await db.query(sql, data, async(err, result) => {
+        db.query(sql, data, async(err, result) => {
             if (err) {
                 return res.json({
                     error: "Upload failed",
                 });
             }
-            res.json({
-                message: "Uploaded Successfully",
-            });
+            post_id = result.insertId;
+
+            if (allHashtags.length) {
+                allHashtags.forEach((hashtag, index) => {
+                    if (index === 0) {
+                        checkSQL += "(?";
+                    } else if (index === allHashtags.length - 1) {
+                        checkSQL += ",?)";
+                    } else {
+                        checkSQL += ",?";
+                    }
+                });
+                await db.query(checkSQL, allHashtags, async(err, result) => {
+                    if (err) {
+                        return res.json({
+                            error: "Upload failed",
+                        });
+                    }
+                    allHashtags.forEach((hashtag) => {
+                        let isExist = false;
+                        result.forEach((r) => {
+                            if (hashtag === r.H_TITLE) {
+                                isExist = true;
+                                hashtagsInsertIDs.push(post_id, r.H_ID);
+                            }
+                        });
+                        if (!isExist) {
+                            newHashtags.push(hashtag);
+                        }
+                    });
+
+                    if (newHashtags.length) {
+                        newHashtags.forEach((hashtag, index) => {
+                            hashSQL += index === 0 ? "(?)" : " ,(?)";
+                        });
+                        await db.query(hashSQL, newHashtags, async(err, result) => {
+                            if (err) {
+                                return res.json({
+                                    error: "Upload failed",
+                                });
+                            }
+                            newHashtags.forEach((hash, index) => {
+                                let id = result.insertId;
+                                index === 0 ?
+                                    hashtagsInsertIDs.push(post_id, id) :
+                                    hashtagsInsertIDs.push(post_id, ++id);
+                            });
+                            if (hashtagsInsertIDs.length) {
+                                if (hashtagsInsertIDs.length === 2) postHashSQL += "(?,?)";
+                                else
+                                    for (let i = 0; i < hashtagsInsertIDs.length / 2; i++) {
+                                        postHashSQL += i === 0 ? "(?,?)" : " ,(?,?)";
+                                    }
+                                await db.query(
+                                    postHashSQL,
+                                    hashtagsInsertIDs,
+                                    async(err, result) => {
+                                        if (err) {
+                                            return res.json({
+                                                error: "Upload failed",
+                                            });
+                                        }
+                                        res.json({
+                                            success: "Upload Successfully",
+                                        });
+                                    }
+                                );
+                            } else {
+                                res.json({
+                                    success: "Upload Successfully",
+                                });
+                            }
+                        });
+                    } else if (hashtagsInsertIDs.length) {
+                        if (hashtagsInsertIDs.length === 2) postHashSQL += "(?,?)";
+                        else
+                            for (let i = 0; i < hashtagsInsertIDs.length / 2; i++) {
+                                postHashSQL += i === 0 ? "(?,?)" : " ,(?,?)";
+                            }
+                        await db.query(
+                            postHashSQL,
+                            hashtagsInsertIDs,
+                            async(err, result) => {
+                                if (err) {
+                                    return res.json({
+                                        error: "Upload failed",
+                                    });
+                                }
+                                res.json({
+                                    success: "Upload Successfully",
+                                });
+                            }
+                        );
+                    } else {
+                        res.json({
+                            success: "Upload Successfully",
+                        });
+                    }
+                });
+            } else {
+                res.json({
+                    success: "Successfully Uploaded",
+                });
+            }
         });
     }
 );
-const findHashtag = async(hashtag, h_id, p_id) => {
-    // let h_id = false;
-    // let p_id = result.insertId;
-    // map(allHashtags, async(hashtag) => {
-    //     // await findHashtag(hashtag, h_id, p_id);
-    //     sql = "SELECT H_ID FROM hashtag WHERE H_TITLE = ?";
-    //     await db.query(sql, [hashtag], async(sError, sRes) => {
-    //         data = {
-    //             H_TITLE: hashtag,
-    //         };
-    //         sql = "SELECT H_ID FROM hashtag WHERE H_TITLE = ?";
-    //         await db.query(sql, [hashtag], async(sError, sRes) => {
-    //             if (sError) {
-    //                 return console.log("An Error occurred");
-    //             }
-    //             console.log(sRes, sRes.length);
-    //             h_id = sRes.length > 0 ? sRes[0].H_ID : false;
-    //             console.log(h_id);
-    //             if (h_id) {
-    //                 console.log(data);
-    //                 data = {
-    //                     p_id: p_id,
-    //                     h_id: h_id,
-    //                 };
-    //                 h_id = false;
-    //                 sql = "INSERT INTO post_hashtag SET ? ";
-    //                 await db.query(sql, [data], (e1, r1) => {
-    //                     if (e1) {
-    //                         return console.log("error2", e1);
-    //                     }
-    //                     console.log("post_hashtag successfully inserted");
-    //                 });
-    //             } else {
-    //                 console.log(data);
-    //                 sql = "INSERT INTO hashtag SET ? ";
-    //                 await db.query(sql, data, async(e, r) => {
-    //                     if (e) {
-    //                         return console.log("error11");
-    //                     }
-    //                     console.log("Hashtag successfully added");
-    //                     h_id = r.insertId;
-    //                     data = {
-    //                         p_id: p_id,
-    //                         h_id: h_id,
-    //                     };
-    //                     h_id = null;
-    //                     sql = "INSERT INTO post_hashtag SET ? ";
-    //                     await db.query(sql, data, (e1, r1) => {
-    //                         if (e1) {
-    //                             return console.log("error2", e1);
-    //                         }
-    //                         console.log("post_hashtag successfully inserted");
-    //                     });
-    //                 });
-    //             }
-    //         });
-    //     });
-    // });
-};
 
 module.exports = router;
