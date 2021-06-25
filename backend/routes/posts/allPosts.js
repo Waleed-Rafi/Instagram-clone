@@ -51,7 +51,7 @@ router.get("/all", auth, (req, res) => {
             });
         });
         sql =
-            "SELECT c_post_id,message,id,name,profilePic FROM comments JOIN users ON comments.c_user_id = users.id ORDER BY comments.com_id;";
+            "SELECT com_id,c_post_id,message,id,name,profilePic FROM comments JOIN users ON comments.c_user_id = users.id ORDER BY comments.com_id;";
         db.query(sql, (e, r) => {
             if (e) {
                 return res.json({
