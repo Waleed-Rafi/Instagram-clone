@@ -16,7 +16,9 @@ const deleteComment = require("./routes/posts/deleteComment");
 const updateComment = require("./routes/posts/updateComment");
 
 const getProfile = require("./routes/profile/profile");
+const getHashtags = require("./routes/profile/hashtags");
 const searchProfiles = require("./routes/profile/searchProfiles");
+const searchHashtags = require("./routes/profile/searchHashtags");
 
 const recentJoins = require("./routes/profile/recentJoins");
 
@@ -52,7 +54,9 @@ app.use("/api/posts", deleteComment);
 app.use("/api/posts", updateComment);
 
 app.use("/api/posts", getProfile);
+app.use("/api/posts", getHashtags);
 app.use("/api/posts", searchProfiles);
+app.use("/api/posts", searchHashtags);
 
 app.use("/api/user", recentJoins);
 
