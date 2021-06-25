@@ -16,7 +16,7 @@
     margin-left: 8%;
     margin-top: 1%;
     margin-bottom: 10%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: rgb(38, 38, 38);
 }
 
@@ -40,6 +40,7 @@
     background-size: contain;
     height: 285px;
     width: 293px;
+    object-fit: cover;
 }
 
 .btn-follow-logout {

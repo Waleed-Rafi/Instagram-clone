@@ -49,6 +49,7 @@ class Profile extends Component {
   };
 
   openCommentModal = (post, index) => {
+    console.log(post);
     this.setState({
       showCommentModal: true,
       commentModalData: post,

@@ -7,6 +7,7 @@ export default function AppInput(props) {
   };
   const commentSubmitHandler = (index, e) => {
     props.submitHandler(index, e, commentMessage);
+    setCommentMessage("");
   };
   return (
     <div>

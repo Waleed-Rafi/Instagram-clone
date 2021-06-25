@@ -149,8 +149,8 @@ class home extends Component {
           });
           this.props.setAllPosts(temp);
           this.setState({
-            allPosts: temp,
             commentMessage: "",
+            allPosts: temp,
           });
         }
       })
@@ -160,6 +160,7 @@ class home extends Component {
   };
 
   openCommentModal = (post, index) => {
+    console.log(post);
     this.setState({
       showCommentModal: true,
       commentModalData: post,
@@ -168,25 +169,18 @@ class home extends Component {
   };
 
   closeCommentModal = (allComments, index) => {
+    console.log(allComments);
     let temp = [...this.state.allPosts];
-    if (
-      this.props.auth.myPosts.length &&
-      this.props.auth.myPosts[0].id === temp[index].id
-    ) {
-      let temp2 = [...this.props.auth.myPosts];
-      let i = temp2.findIndex((d) => d.post_id === temp[index].post_id);
-      allComments.map((data) => {
-        temp[index].comments.unshift(data);
-        temp2[i].comments.unshift(data);
-      });
-      this.props.setAllPosts(temp);
-      this.props.setMyPosts(temp2);
-    } else {
-      allComments.map((data) => {
-        temp[index].comments.unshift(data);
-      });
-      this.props.setAllPosts(temp);
-    }
+    let temp2 = [...this.props.auth.allPosts];
+    let i = temp2.findIndex((d) => d.post_id === temp[index].post_id);
+    // allComments.map((data) => {
+    //   temp[index].comments.unshift(data);
+    //   temp2[i].comments.unshift(data);
+    // });
+    temp[index].comments = [...allComments];
+    temp2[i].comments = [...allComments];
+    this.props.setMyPosts(temp);
+    this.props.setAllPosts(temp2);
 
     this.setState({
       allPosts: temp,

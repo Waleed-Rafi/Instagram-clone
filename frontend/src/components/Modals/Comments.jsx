@@ -136,7 +136,6 @@ class MoveModal extends Component {
   };
 
   render() {
-    // console.log();
     let allComments = this.state.postComments.map((data, index) => {
       return (
         <div
@@ -162,16 +161,18 @@ class MoveModal extends Component {
             }}
           >
             {data.name}
-            <span style={{ float: "right", cursor: "pointer" }}>
-              <i
-                className="far fa-trash-alt"
-                onClick={() => this.commentDeleteHandler(data.com_id)}
-              ></i>
-              <i
-                className="far fa-edit"
-                onClick={() => this.commentEditToggler(data)}
-              ></i>
-            </span>
+            {data.id === this.props.auth.user.id && (
+              <span style={{ float: "right", cursor: "pointer" }}>
+                <i
+                  className="far fa-trash-alt"
+                  onClick={() => this.commentDeleteHandler(data.com_id)}
+                ></i>
+                <i
+                  className="far fa-edit"
+                  onClick={() => this.commentEditToggler(data)}
+                ></i>
+              </span>
+            )}
           </span>
           <div
             style={{
