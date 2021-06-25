@@ -11,6 +11,7 @@ import photo5 from "./assets/images/photo6.jpg";
 import photo6 from "./assets/images/photo7.jpg";
 import photo7 from "./assets/images/photo8.jpg";
 import Profile from "./components/profile/Profile";
+import Hashtag from "./components/profile/Hashtag";
 import Notifications from "./components/Notifications/Notifications";
 import Login from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
@@ -95,6 +96,24 @@ class App extends Component {
                     <br />
                   </div>
                   <Profile />
+                </div>
+              );
+            }}
+          />
+          <Route
+            path="/hashtag"
+            exact
+            render={() => {
+              return (
+                <div>
+                  <div className="app">
+                    <Header />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                  </div>
+                  <Hashtag />
                 </div>
               );
             }}

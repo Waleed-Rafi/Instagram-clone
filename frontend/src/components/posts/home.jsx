@@ -405,8 +405,10 @@ class home extends Component {
     return (
       <div className="posts">
         <div>
-          <CreatePost />
-          {all}
+          <div style={{ float: "right", marginRight: "7.3%" }}>
+            <CreatePost />
+          </div>
+          <div>{all}</div>
         </div>
         {this.state.showCommentModal ? (
           <CModal

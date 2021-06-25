@@ -176,7 +176,6 @@ class Profile extends Component {
             <div style={{ fontSize: "16px", fontWeight: 600 }}>
               {this.state.user.name}
               <span
-                onClick={this.logout}
                 className="btn-follow-logout"
                 style={{
                   marginLeft: "4%",
@@ -188,29 +187,30 @@ class Profile extends Component {
                 Message
               </span>
               {this.state.userId !== this.props.auth.user.id &&
-                (this.props.auth.myFollowing.some(
-                  (data) => data["following_id"] === this.findUserId()
-                ) ? (
-                  <span
-                    className="btn-follow-logout"
-                    onClick={this.unFollowUser.bind()}
-                    style={{
-                      backgroundColor: "white",
-                      color: "dodgerblue",
-                      marginLeft: "3%",
-                    }}
-                  >
-                    Following
-                  </span>
-                ) : (
-                  <span
-                    className="btn-follow-logout"
-                    onClick={this.followUser.bind()}
-                    style={{ marginLeft: "3%" }}
-                  >
-                    Follow
-                  </span>
-                ))}
+              this.props.auth.myFollowing.findIndex(
+                (data) =>
+                  parseInt(data.following_id) === parseInt(this.findUserId())
+              ) !== -1 ? (
+                <span
+                  className="btn-follow-logout"
+                  onClick={this.unFollowUser.bind()}
+                  style={{
+                    backgroundColor: "white",
+                    color: "dodgerblue",
+                    marginLeft: "3%",
+                  }}
+                >
+                  Following
+                </span>
+              ) : (
+                <span
+                  className="btn-follow-logout"
+                  onClick={this.followUser.bind()}
+                  style={{ marginLeft: "3%" }}
+                >
+                  Follow
+                </span>
+              )}
               {this.state.userId === this.props.auth.user.id && (
                 <span
                   onClick={this.logout}

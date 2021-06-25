@@ -9,6 +9,7 @@
 .recent-heading {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 600;
+    color: rgba(0, 0, 0, 0.698);
 }
 
 .s-user-name-container {
@@ -31,13 +32,13 @@
 .follow-btn {
     display: block;
     background-color: dodgerblue;
-    padding: 1px 6px;
+    padding: 3px 10px;
     color: white;
     width: auto;
     margin-left: 15px;
     text-align: center;
     font-size: smaller;
-    border-radius: 2px;
+    border-radius: 4px;
     font-weight: 500;
     cursor: pointer;
 }

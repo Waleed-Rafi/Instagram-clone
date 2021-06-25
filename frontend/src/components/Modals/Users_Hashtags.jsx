@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 
 const customStyles = {
   content: {
-    top: "35.6%",
-    left: "49.3%",
+    top: "32.4%",
+    left: "46.8%",
     right: "auto",
     bottom: "auto",
     marginRight: "-50%",
@@ -23,19 +23,34 @@ const customStyles = {
 
 class MoveModal extends Component {
   state = {
-    allUsers: [],
+    allUsersHashtags: [],
   };
 
   componentDidMount = () => {
+    console.log(this.props.isHashtag);
+
     axios.defaults.headers.common["x-auth-token"] =
       localStorage.getItem("instagram");
-    axios
-      .post("/api/posts/searchedUsers", { name: this.props.data })
-      .then((res) => {
+    if (!this.props.isHashtag) {
+      axios
+        .post("/api/posts/searchedUsers", { name: this.props.data })
+        .then((res) => {
+          this.setState({
+            allUsersHashtags: [...res.data.result],
+          });
+        });
+    } else {
+      let title = this.props.data
+        .split("")
+        .splice(1, this.props.data.length)
+        .join("");
+      axios.post("/api/posts/searchHashtags", { title: title }).then((res) => {
+        console.log(res.data.result);
         this.setState({
-          allUsers: [...res.data.result],
+          allUsersHashtags: [...res.data.result],
         });
       });
+    }
   };
 
   closeModal = () => {
@@ -43,9 +58,9 @@ class MoveModal extends Component {
   };
 
   render() {
-    let allUsers = null;
-    if (this.state.allUsers.length) {
-      allUsers = this.state.allUsers.map((data, index) => {
+    let allUsersHashtags = null;
+    if (this.state.allUsersHashtags.length) {
+      allUsersHashtags = this.state.allUsersHashtags.map((data, index) => {
         return (
           <div
             key={data.name + index}
@@ -56,10 +71,23 @@ class MoveModal extends Component {
             onClick={this.closeModal}
           >
             <Link
-              to={`/profile?userId=${data.id}`}
+              to={
+                this.props.isHashtag
+                  ? `/hashtag?hashId=${data.H_ID}&hashTitle=${data.H_TITLE}`
+                  : `/profile?userId=${data.id}`
+              }
               style={{ textDecoration: "none" }}
             >
-              <img alt="profile" className="profile" src={data.profilePic} />{" "}
+              <img
+                style={{ objectFit: "cover" }}
+                alt="profile"
+                className="profile"
+                src={
+                  this.props.isHashtag
+                    ? "https://www.ourquadcities.com/wp-content/uploads/sites/19/2019/01/hastag_1546638455807_66575095_ver1.0.png"
+                    : data.profilePic
+                }
+              />{" "}
               <span
                 style={{
                   display: "block",
@@ -73,7 +101,7 @@ class MoveModal extends Component {
                   overflowWrap: "break-word",
                 }}
               >
-                {data.name}{" "}
+                {this.props.isHashtag ? data.H_TITLE : data.name}{" "}
               </span>{" "}
             </Link>{" "}
             <br />
@@ -82,17 +110,17 @@ class MoveModal extends Component {
         );
       });
     } else {
-      allUsers = (
+      allUsersHashtags = (
         <div
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "maroon",
+            color: "light blue",
             fontFamily: "Segoe UI",
           }}
         >
-          No User Exists!!
+          No User or Hashtag Exists!!
         </div>
       );
     }
@@ -112,7 +140,7 @@ class MoveModal extends Component {
               marginTop: "4%",
             }}
           >
-            {allUsers}{" "}
+            {allUsersHashtags}{" "}
           </div>{" "}
         </Modal>{" "}
       </div>

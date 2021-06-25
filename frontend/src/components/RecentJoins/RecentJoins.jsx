@@ -99,8 +99,8 @@ class RecentJoins extends Component {
         );
       });
     return (
-      <div style={{ position: "fixed" }}>
-        <h2 className="recent-heading">New Users</h2>
+      <div style={{ position: "fixed", top: "32%" }}>
+        <h2 className="recent-heading">Recent Joins</h2>
         {all}
       </div>
     );

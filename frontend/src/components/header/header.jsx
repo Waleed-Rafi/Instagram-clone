@@ -9,12 +9,14 @@ class header extends Component {
   state = {
     searchedUserOrHashtag: "",
     isOpenModal: false,
+    isHashtag: false,
   };
   searchUsersHashtags = (e) => {
     e.preventDefault();
     console.log(this.state.searchedUserOrHashtag);
     this.setState({
       isOpenModal: true,
+      isHashtag: this.state.searchedUserOrHashtag[0] === "#" ? true : false,
     });
   };
   searchUsersHashtagsChangeHandler = (e) => {
@@ -35,6 +37,7 @@ class header extends Component {
           <UserModal
             data={this.state.searchedUserOrHashtag}
             isOpenModal={this.state.isOpenModal}
+            isHashtag={this.state.isHashtag}
             closeModal={this.closeModal}
           />
         ) : null}
