@@ -20,6 +20,7 @@ import jwt_decode from "jwt-decode";
 import { connect } from "react-redux";
 import { loginAfter } from "./actions/authActions";
 import SuggestedUsers from "./components/RecentJoins/RecentJoins";
+import Messages from "./components/Messages/Messages";
 
 class App extends Component {
   state = {
@@ -39,8 +40,9 @@ class App extends Component {
         decoded.exp > timestamp
       ) {
         this.props.loginAfter();
+        // location = window.location.href;
         this.setState({
-          redirect: <Redirect to="/" />,
+          redirect: <Redirect to={window.location.pathname} />,
         });
       } else if (timestamp >= decoded.exp) {
         localStorage.removeItem("instagram");
@@ -166,6 +168,24 @@ class App extends Component {
                     postUserName="Waleed_Rafi"
                     postUserImage={photo3}
                   />
+                </div>
+              );
+            }}
+          />
+          <Route
+            exact
+            path="/messages"
+            render={() => {
+              return (
+                <div style={{ overflow: "hidden" }}>
+                  <div className="app">
+                    <Header />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                  </div>
+                  <Messages />
                 </div>
               );
             }}
