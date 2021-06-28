@@ -9,6 +9,7 @@ import {
 import { connect } from "react-redux";
 import CModal from "../Modals/Comments";
 import axios from "../../axios/axios";
+import MessageModal from "../Modals/MessageModal";
 
 const title = document.title;
 
@@ -19,6 +20,7 @@ class Profile extends Component {
     commentModalData: {},
     commentModalPostIndex: null,
     userId: this.props.auth.user.id,
+    openMessageModal: false,
   };
 
   logout = () => {
@@ -176,17 +178,20 @@ class Profile extends Component {
             </div>
             <div style={{ fontSize: "16px", fontWeight: 600 }}>
               {this.state.user.name}
-              <span
-                className="btn-follow-logout"
-                style={{
-                  marginLeft: "4%",
-                  backgroundColor: "#fff",
-                  color: "#000",
-                  border: "1px solid gray",
-                }}
-              >
-                Message
-              </span>
+              {this.state.userId !== this.props.auth.user.id && (
+                <span
+                  className="btn-follow-logout"
+                  style={{
+                    marginLeft: "4%",
+                    backgroundColor: "#fff",
+                    color: "#000",
+                    border: "1px solid gray",
+                  }}
+                  onClick={() => this.setState({ openMessageModal: true })}
+                >
+                  Message
+                </span>
+              )}
               {this.state.userId !== this.props.auth.user.id &&
               this.props.auth.myFollowing.findIndex(
                 (data) =>
@@ -259,6 +264,13 @@ class Profile extends Component {
             showCommentModal={this.state.showCommentModal}
             commentModalData={this.state.commentModalData}
             closeCommentModal={this.closeCommentModal}
+          />
+        ) : null}
+        {this.state.openMessageModal ? (
+          <MessageModal
+            isOpen={this.state.openMessageModal}
+            userDetail={this.state.user}
+            currentUser={this.props.auth.user}
           />
         ) : null}
         {headSection}

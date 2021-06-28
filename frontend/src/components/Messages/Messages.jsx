@@ -1,64 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
+import axios from "../../axios/axios";
 import ShowMessage from "./ShowMessage";
 import MessageSR from "./MessageSR";
+import { loginAfter } from "../../actions/authActions";
 import FIREBASE from "../firebase/firebase";
 import "./messages.css";
 
 // const DATABASE = FIREBASE.database();
 
 function Messages(props) {
-  // useEffect(() => {
-  //   FIREBASE.database().ref('/usersMessages/' + )
-  // },[])
   const [myMessage, setMyMessage] = useState("");
-  const [allMessages, setAllMessages] = useState([
-    {
-      from: 1,
-      to: 2,
-      id: 1,
-      name: "Waleed Rafi",
-      profilePic:
-        "https://firebasestorage.googleapis.com/v0/b/react-my-burger-ec8a6.appspot.com/o/profile.jpg?alt=media&token=f1d30d50-db03-4e7c-bf4a-6101e0c72ed6",
-      messages: [
-        { type: "SEND", message: "Hello" },
-        { type: "RECEIVE", message: "HI" },
-        { type: "RECEIVE", message: "HI" },
-        { type: "RECEIVE", message: "HI" },
-      ],
-    },
-    {
-      from: 1,
-      to: 2,
-      id: 1,
-      name: "Waleed Rafi",
-      profilePic:
-        "https://firebasestorage.googleapis.com/v0/b/react-my-burger-ec8a6.appspot.com/o/profile.jpg?alt=media&token=f1d30d50-db03-4e7c-bf4a-6101e0c72ed6",
-      messages: [
-        { type: "SEND", message: "Hello" },
-        { type: "RECEIVE", message: "HI" },
-        { type: "RECEIVE", message: "HI" },
-        { type: "RECEIVE", message: "HI" },
-      ],
-    },
-  ]);
-  const [currentlyOpenMessage, setCurrentlyOpenedMessage] = useState({
-    id: 1,
-    name: "Waleed Rafi",
-    profilePic:
-      "https://firebasestorage.googleapis.com/v0/b/react-my-burger-ec8a6.appspot.com/o/profile.jpg?alt=media&token=f1d30d50-db03-4e7c-bf4a-6101e0c72ed6",
-    messages: [
-      { type: "SEND", message: "Hello" },
-      { type: "RECEIVE", message: "HI" },
-      { type: "RECEIVE", message: "HI" },
-      { type: "RECEIVE", message: "HI" },
-    ],
-  });
-
+  const [allMessages, setAllMessages] = useState([]);
+  const [targetAllMessages, setTargetAllMessages] = useState([]);
+  const [currentlyOpenMessage, setCurrentlyOpenedMessage] = useState({});
   const [currentlyOpenedIndex, setCurrentlyOpenedIndex] = useState(0);
 
-  const changeHandler = (e) => {
+  useEffect(() => {
+    if (!props.auth.user.id) window.location.href = "/";
+    (async () => {
+      await FIREBASE.database()
+        .ref("/usersMessages/" + props.auth.user.id)
+        .on("value", (snapshot) => {
+          const data = snapshot.val();
+          console.log(data);
+          if (data) {
+            setAllMessages(data);
+            setCurrentlyOpenedMessage(data[0]);
+          }
+        });
+    })();
+  }, []);
+
+  const changeHandler = async (e) => {
     setMyMessage(e.target.value);
+    await FIREBASE.database()
+      .ref("/usersMessages/" + currentlyOpenMessage.id)
+      .on("value", (snapshot) => {
+        const data = snapshot.val();
+        console.log(data);
+        if (data) {
+          setTargetAllMessages(data);
+        }
+      });
   };
 
   const messageUserClickHandler = (data, index) => {
@@ -69,12 +53,38 @@ function Messages(props) {
   const submitHandler = (e) => {
     e.preventDefault();
     let tempOpenedMessage = { ...currentlyOpenMessage };
-    tempOpenedMessage.messages.push({ type: "SEND", message: myMessage });
+    tempOpenedMessage.messages.push({
+      from: props.auth.user.id,
+      to: currentlyOpenMessage.id,
+      message: myMessage,
+    });
     let tempAllMessages = [...allMessages];
     tempAllMessages[currentlyOpenedIndex] = tempOpenedMessage;
+
+    let tempTargetAll = [...targetAllMessages];
+    let idx2 = tempTargetAll.findIndex(
+      (data) => data.id === props.auth.user.id
+    );
+    if (idx2 !== -1) {
+      tempTargetAll[idx2].messages.push({
+        from: props.auth.user.id,
+        to: currentlyOpenMessage.sender,
+        message: myMessage,
+      });
+    }
+
     setMyMessage("");
     setCurrentlyOpenedMessage(tempOpenedMessage);
     setAllMessages(tempAllMessages);
+    setTargetAllMessages(tempTargetAll);
+
+    FIREBASE.database()
+      .ref("/usersMessages/" + props.auth.user.id)
+      .set(tempAllMessages);
+
+    FIREBASE.database()
+      .ref("/usersMessages/" + currentlyOpenMessage.id)
+      .set(tempTargetAll);
   };
 
   return (
@@ -89,12 +99,16 @@ function Messages(props) {
         </div>
       </div>
       <div className="messages-right-section">
-        <ShowMessage openedMessage={currentlyOpenMessage} />
+        <ShowMessage
+          openedMessage={currentlyOpenMessage}
+          authUserId={props.auth.user.id}
+        />
 
         <div className="new-messages">
           <form onSubmit={submitHandler}>
             <input
               style={{ color: "rgb(38, 38, 38)" }}
+              autoFocus={true}
               value={myMessage}
               className="new-message-input"
               placeholder="Message..."
@@ -113,4 +127,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Messages);
+export default connect(mapStateToProps, {
+  loginAfter,
+})(Messages);

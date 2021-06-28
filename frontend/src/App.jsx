@@ -26,7 +26,7 @@ class App extends Component {
   state = {
     redirect: null,
   };
-  componentDidMount() {
+  async componentDidMount() {
     const token = localStorage.getItem("instagram");
     if (token) {
       let decoded = jwt_decode(token);
@@ -39,7 +39,7 @@ class App extends Component {
         decoded.iat &&
         decoded.exp > timestamp
       ) {
-        this.props.loginAfter();
+        await this.props.loginAfter();
         // location = window.location.href;
         this.setState({
           redirect: <Redirect to={window.location.pathname} />,
