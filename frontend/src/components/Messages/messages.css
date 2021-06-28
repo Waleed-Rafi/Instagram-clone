@@ -11,7 +11,7 @@
 .messages-left-section {
     position: relative;
     height: 100%;
-    width: 25%;
+    width: 45%;
     border-right: 1px solid rgba(219, 219, 219);
     overflow: hidden;
 }
@@ -20,6 +20,55 @@
     position: relative;
     height: 100%;
     width: 100%;
+}
+
+.messages-all-users-container {
+    position: relative;
+    width: 100%;
+    height: 93%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.messages-all-users {
+    height: 4%;
+    padding: 20px 20px;
+    display: flex;
+    align-items: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.messages-all-name-message {
+    position: relative;
+    width: 70%;
+}
+
+.messages-user-image {
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 7px;
+}
+
+.messages-all-users:hover {
+    background-color: #2626260c;
+    cursor: pointer;
+}
+
+.messages-user-name {
+    font-size: 14px;
+    color: #262626c5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+}
+
+.messages-user-message {
+    color: #2626269b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
 }
 
 .messages-right-container {

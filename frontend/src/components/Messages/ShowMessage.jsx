@@ -1,40 +1,27 @@
 import React from "react";
 import useScrollBottom from "../../hooks/useScrollBottom";
 
-export default function ShowMessage() {
+export default function ShowMessage({ openedMessage }) {
   useScrollBottom("messages-right-container");
 
   return (
-    <div id="messages-right-container" className="messages-right-container">
-      <div className="messages-right-detail">
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-right">
-          Lorem ipsum dolor sit amet, consectetur adipisicing.
+    <>
+      <div className="messages-top-section">{openedMessage.name}</div>
+      <div id="messages-right-container" className="messages-right-container">
+        <div className="messages-right-detail">
+          {openedMessage.messages.map((msg, index) => {
+            return msg.type === "SEND" ? (
+              <div className="message-detail-right" key={msg.message + index}>
+                {msg.message}
+              </div>
+            ) : (
+              <div className="message-detail-left" key={msg.message + index}>
+                {msg.message}
+              </div>
+            );
+          })}
         </div>
-        <div className="message-detail-left">Lorem sdfdf</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-right">Lorem</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-right">Lorem</div>
-        <div className="message-detail-left">Lorem asdfasdfsdf s</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-right">Lorem sdfsdfsdfsdf</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-right">Lorem sdfsdfsdfsdf</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-right">Lorem sdfsdfsdfsdf</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-left">Lorem</div>
-        <div className="message-detail-left">Lorem</div>
       </div>
-    </div>
+    </>
   );
 }
