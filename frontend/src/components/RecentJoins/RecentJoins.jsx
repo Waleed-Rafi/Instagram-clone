@@ -14,7 +14,6 @@ class RecentJoins extends Component {
       "instagram"
     );
     const recentJoins = await axios.get("/api/user/recentJoins");
-    console.log(recentJoins.data.users);
     this.setState({
       recentJoins: recentJoins.data.users,
     });
@@ -34,7 +33,6 @@ class RecentJoins extends Component {
     const response = await axios.post("/api/user/follow", {
       following_id: userId,
     });
-    console.log(response.data);
     if (response.data.message) {
       this.props.setMyFollowing([
         ...this.props.auth.myFollowing,
@@ -50,7 +48,6 @@ class RecentJoins extends Component {
     const response = await axios.post("/api/user/unFollow", {
       following_id: userId,
     });
-    console.log(response.data);
     if (response.data.message) {
       let filteredFollowings = [...this.props.auth.myFollowing].filter(
         (followings) => {

@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import UserModal from "../Modals/Users_Hashtags";
 
-class header extends Component {
+class Header extends Component {
   state = {
     searchedUserOrHashtag: "",
     isOpenModal: false,
@@ -13,7 +13,6 @@ class header extends Component {
   };
   searchUsersHashtags = (e) => {
     e.preventDefault();
-    console.log(this.state.searchedUserOrHashtag);
     this.setState({
       isOpenModal: true,
       isHashtag: this.state.searchedUserOrHashtag[0] === "#" ? true : false,
@@ -146,4 +145,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(header);
+export default connect(mapStateToProps)(Header);

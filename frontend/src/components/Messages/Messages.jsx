@@ -23,7 +23,6 @@ function Messages(props) {
         .ref("/usersMessages/" + props.auth.user.id)
         .on("value", (snapshot) => {
           const data = snapshot.val();
-          console.log(data);
           if (data) {
             setAllMessages(data);
             setCurrentlyOpenedMessage(data[0]);
@@ -38,7 +37,6 @@ function Messages(props) {
       .ref("/usersMessages/" + currentlyOpenMessage.id)
       .on("value", (snapshot) => {
         const data = snapshot.val();
-        console.log(data);
         if (data) {
           setTargetAllMessages(data);
         }

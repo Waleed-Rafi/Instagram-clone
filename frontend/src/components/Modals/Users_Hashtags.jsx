@@ -27,8 +27,6 @@ class MoveModal extends Component {
   };
 
   componentDidMount = () => {
-    console.log(this.props.isHashtag);
-
     axios.defaults.headers.common["x-auth-token"] =
       localStorage.getItem("instagram");
     if (!this.props.isHashtag) {
@@ -45,7 +43,6 @@ class MoveModal extends Component {
         .splice(1, this.props.data.length)
         .join("");
       axios.post("/api/posts/searchHashtags", { title: title }).then((res) => {
-        console.log(res.data.result);
         this.setState({
           allUsersHashtags: [...res.data.result],
         });

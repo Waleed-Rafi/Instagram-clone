@@ -50,7 +50,6 @@ class MoveModal extends Component {
   };
 
   commentSubmitHandler = (post, e) => {
-    console.log(this.props.auth.user);
     e.preventDefault();
 
     axios.defaults.headers.common["x-auth-token"] =
@@ -83,7 +82,6 @@ class MoveModal extends Component {
 
   commentUpdateHandler = (e) => {
     e.preventDefault();
-    console.log(this.state.commentType, this.state.editCommentData);
     let data = {
       ...this.state.editCommentData,
       message: this.state.commentMessage,

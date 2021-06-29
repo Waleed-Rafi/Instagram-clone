@@ -37,7 +37,6 @@ class Hashtag extends Component {
     axios.defaults.headers.common["x-auth-token"] =
       localStorage.getItem("instagram");
     axios.get(`/api/posts/hashtag/${hashId}`).then((res) => {
-      console.log(res.data.result);
       let allPosts = [];
       this.props.auth.allPosts.forEach((post) => {
         res.data.result.forEach((r) => {
@@ -46,7 +45,6 @@ class Hashtag extends Component {
           }
         });
       });
-      console.log(allPosts);
       this.setState({
         allPosts: allPosts,
         hashtagId: hashId,
@@ -68,7 +66,6 @@ class Hashtag extends Component {
   };
 
   closeCommentModal = (allComments, index) => {
-    console.log(allComments);
     let temp = [...this.state.allPosts];
     let temp2 = [...this.props.auth.allPosts];
     let i = temp2.findIndex((d) => d.post_id === temp[index].post_id);

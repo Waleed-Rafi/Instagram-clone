@@ -20,12 +20,11 @@ const customStyles = {
   },
 };
 
-const MessageModal = ({ userDetail, currentUser }) => {
+const MessageModal = ({ userDetail, currentUser, closeMessageModal }) => {
   const [newMessage, setNewMessage] = useState("");
   const [myAllMessages, setMyAllMessages] = useState([]);
   const [targetAllMessages, setTargetAllMessages] = useState([]);
   useEffect(() => {
-    console.log(userDetail, currentUser);
     (async () => {
       await FIREBASE.database()
         .ref("/usersMessages/" + currentUser.id)
@@ -52,7 +51,6 @@ const MessageModal = ({ userDetail, currentUser }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(myAllMessages, targetAllMessages);
     let tempMyAll = [...myAllMessages];
     let idx = tempMyAll.findIndex((data) => data.id === userDetail.id);
     if (idx !== -1) {
@@ -100,10 +98,14 @@ const MessageModal = ({ userDetail, currentUser }) => {
     setNewMessage("");
   };
 
+  const closeModal = () => {
+    closeMessageModal();
+  };
+
   return (
     <Modal
       isOpen={true}
-      // onRequestClose={this.closeModal}
+      onRequestClose={closeModal}
       style={customStyles}
       ariaHideApp={false}
     >

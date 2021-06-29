@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import CModal from "../Modals/Comments";
 import "./home.css";
 import { NavLink } from "react-router-dom";
-import CreatePost from "./createPost";
+import CreatePost from "./CreatePost";
 import AppInput from "./AppInput";
 
 class home extends Component {
@@ -45,7 +45,6 @@ class home extends Component {
     axios.defaults.headers.common["x-auth-token"] =
       localStorage.getItem("instagram");
     const response = await axios.get("/api/user/myFollowing");
-    console.log(response.data);
     this.props.setMyFollowing(response.data.data);
   };
 
@@ -160,7 +159,6 @@ class home extends Component {
   };
 
   openCommentModal = (post, index) => {
-    console.log(post);
     this.setState({
       showCommentModal: true,
       commentModalData: post,
@@ -169,7 +167,6 @@ class home extends Component {
   };
 
   closeCommentModal = (allComments, index) => {
-    console.log(allComments);
     let temp = [...this.state.allPosts];
     let temp2 = [...this.props.auth.allPosts];
     let i = temp2.findIndex((d) => d.post_id === temp[index].post_id);

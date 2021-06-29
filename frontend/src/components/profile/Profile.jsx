@@ -15,7 +15,10 @@ const title = document.title;
 
 class Profile extends Component {
   state = {
+    user: {},
     allPosts: [],
+    totalFollowers: [],
+    totalFollowing: [],
     showCommentModal: false,
     commentModalData: {},
     commentModalPostIndex: null,
@@ -32,14 +35,17 @@ class Profile extends Component {
   }
   componentDidMount = async () => {
     let userId = parseInt(this.findUserId());
+    if (!userId) userId = this.props.user.id;
 
     // if (this.props.auth.user.id !== userId) {
     axios.defaults.headers.common["x-auth-token"] =
       localStorage.getItem("instagram");
     axios.get(`/api/posts/profile/${userId}`).then((res) => {
-      document.title = "Profile " + res.data.user.name;
+      document.title = "Profile";
       this.setState({
         user: res.data.user,
+        totalFollowers: res.data.totalFollowers,
+        totalFollowing: res.data.totalFollowings,
         allPosts: res.data.result,
         userId: userId,
       });
@@ -51,7 +57,6 @@ class Profile extends Component {
   };
 
   openCommentModal = (post, index) => {
-    console.log(post);
     this.setState({
       showCommentModal: true,
       commentModalData: post,
@@ -60,7 +65,6 @@ class Profile extends Component {
   };
 
   closeCommentModal = (allComments, index) => {
-    console.log(allComments);
     let temp = [...this.state.allPosts];
     let temp2 = [...this.props.auth.allPosts];
     let i = temp2.findIndex((d) => d.post_id === temp[index].post_id);
@@ -80,11 +84,16 @@ class Profile extends Component {
     });
   };
 
+  closeMessageModal = () => {
+    this.setState({
+      openMessageModal: false,
+    });
+  };
+
   followUser = async () => {
     const response = await axios.post("/api/user/follow", {
       following_id: this.state.userId,
     });
-    console.log(response.data);
     if (response.data.message) {
       this.props.setMyFollowing([
         ...this.props.auth.myFollowing,
@@ -159,7 +168,7 @@ class Profile extends Component {
                     lineHeight: "18px",
                   }}
                 >
-                  200M
+                  {this.state.totalFollowers.length}
                 </span>{" "}
                 followers
               </span>
@@ -171,7 +180,7 @@ class Profile extends Component {
                     lineHeight: "18px",
                   }}
                 >
-                  45
+                  {this.state.totalFollowing.length}
                 </span>{" "}
                 following
               </span>
@@ -271,6 +280,7 @@ class Profile extends Component {
             isOpen={this.state.openMessageModal}
             userDetail={this.state.user}
             currentUser={this.props.auth.user}
+            closeMessageModal={this.closeMessageModal}
           />
         ) : null}
         {headSection}
