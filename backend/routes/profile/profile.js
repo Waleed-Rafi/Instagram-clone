@@ -57,10 +57,32 @@ router.get("/profile/:id", auth, (req, res) => {
                     }
                     result[index].comments.reverse();
                 });
-                res.json({
-                    user: re[0],
-                    result: result,
+                sql = "SELECT * FROM followers WHERE follower_id = ?";
+                db.query(sql, req.params.id, (err, r1) => {
+                    if (err) {
+                        return res.json({
+                            error: "Failed to fetch followers",
+                        });
+                    }
+                    sql = "SELECT * FROM followers WHERE following_id = ?";
+                    db.query(sql, req.params.id, (err, r2) => {
+                        if (err) {
+                            return res.json({
+                                error: "Failed to fetch followers",
+                            });
+                        }
+                        res.json({
+                            user: re[0],
+                            totalFollowings: r1,
+                            totalFollowers: r2,
+                            result: result,
+                        });
+                    });
                 });
+                // res.json({
+                //     user: re[0],
+                //     result: result,
+                // });
             });
         });
     });
