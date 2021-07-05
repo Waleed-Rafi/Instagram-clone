@@ -8,7 +8,7 @@ import FIREBASE from "../firebase/firebase";
 import "./messages.css";
 
 // const DATABASE = FIREBASE.database();
-
+let openIndex = 0;
 function Messages(props) {
   const [myMessage, setMyMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
@@ -25,7 +25,7 @@ function Messages(props) {
           const data = snapshot.val();
           if (data) {
             setAllMessages(data);
-            setCurrentlyOpenedMessage(data[0]);
+            setCurrentlyOpenedMessage(data[openIndex]);
           }
         });
     })();
@@ -46,6 +46,7 @@ function Messages(props) {
   const messageUserClickHandler = (data, index) => {
     setCurrentlyOpenedMessage(data);
     setCurrentlyOpenedIndex(index);
+    openIndex = index;
   };
 
   const submitHandler = (e) => {
